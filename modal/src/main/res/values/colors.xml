@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorPrimaryMask">#4C01463E</color>
-    <color name="colorPrimaryText">#222</color>
+    <color name="modal_start">#ffffff</color>
+    <color name="modal_end">#ddffffff</color>
+    <color name="modal_title">#111111</color>
+    <color name="modal_text_icon">#4B4B4B</color>
+    <color name="modal_bg_dark_transparent">#542B2B2B</color>
+    <color name="black_faded">#aa000000</color>
+    <color name="grey">#e9e9e9</color>
+    <color name="orange">#BB7E13</color>
+    <color name="transparent">#00000000</color>
 </resources>

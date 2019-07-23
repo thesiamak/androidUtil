@@ -1,5 +1,3 @@
 <resources>
-    <string name="app_name">Modal</string>
-    <string name="sample_text" >This site uses cookies from Google to deliver its services and to analyze traffic. Your IP address and user-agent are shared with</string>
     <string name="ok">Got it!</string>
 </resources>
