@@ -52,8 +52,8 @@ public class CustomBuilder extends BaseBuilder {
     }
     public void show(int view){
         try {
-            View modal = ((LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(view,null,false);
-            buildModal(modal);
+            View layout = ((LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(view,null,false);
+            buildModal(layout);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -64,12 +64,10 @@ public class CustomBuilder extends BaseBuilder {
     void buildModal(View layout){
         try {
 
-
             final RelativeLayout modal = new RelativeLayout(new ContextThemeWrapper(activity, R.style.modal_root));
-            RelativeLayout.LayoutParams modalLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            modal.setLayoutParams(modalLayoutParams);
+            ViewGroup.LayoutParams modalLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-            modal.addView(layout);
+            modal.addView(layout,modalLayoutParams);
 
             modal.setTag(direction);
             setViewDirection(modal);
@@ -87,8 +85,7 @@ public class CustomBuilder extends BaseBuilder {
                     closeModal(modal, bg);
                 }
             });
-
-            bg.addView(modal);
+            bg.addView(modal,modalLayoutParams);
 
             root.addView(bg, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 

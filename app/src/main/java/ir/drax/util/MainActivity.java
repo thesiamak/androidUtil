@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openModal2(View view) {
-        Modal.builder(this).setDirection(Direction.FromTop).typeCustomView().show(R.layout.reserve_start_trip);
+        Modal.builder(this).setDirection(Direction.FromTop).typeCustomView().show(R.layout.sample_layout);
     }
 
     public void hideModal(View view) {
