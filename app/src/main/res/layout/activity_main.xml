@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,25 +9,39 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:src="@drawable/main_bg"
-        android:scaleType="centerCrop"
-        android:foreground="@color/colorPrimaryMask"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:foreground="@color/colorPrimaryMask"
+        android:scaleType="centerCrop"
+        android:src="@drawable/main_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/modalBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Open Modal"
+            android:onClick="openModal"
+            />
 
 
-    <Button
-        android:id="@+id/modalBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Open Modal"
-        android:onClick="openModal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/modalBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="openModal2"
+            android:text="Open Custom Modal" />
 
+    </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

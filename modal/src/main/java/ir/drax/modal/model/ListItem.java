@@ -1,4 +1,4 @@
-package ir.drax.modal.ListAlert;
+package ir.drax.modal.model;
 
 import android.view.View;
 

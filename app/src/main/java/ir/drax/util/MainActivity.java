@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openModal(View view) {
         Modal.builder(this).show("",getString(R.string.sample_text),R.drawable.ic_gesture_black_24dp);
+
     }
 
 
@@ -25,5 +26,13 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (!Modal.builder(this).hide())
         super.onBackPressed();
+    }
+
+    public void openModal2(View view) {
+        Modal.builder(this).setDirection(Direction.FromTop).typeCustomView().show(R.layout.reserve_start_trip);
+    }
+
+    public void hideModal(View view) {
+        onBackPressed();
     }
 }

@@ -1,4 +1,4 @@
-package ir.drax.modal;
+package ir.drax.modal.model;
 
 import android.view.View;
 

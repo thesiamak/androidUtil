@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/modal_root"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    style="@style/modal_root"
     android:layout_height="wrap_content"
+    style="@style/modal_root"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView

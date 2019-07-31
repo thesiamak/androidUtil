@@ -22,24 +22,25 @@ public class AlertBuilder extends BaseBuilder {
     static AlertBuilder getInstance(AppCompatActivity activity,boolean resetDefaults) {
 
         if (!(instance instanceof AlertBuilder)){
-            instance = new AlertBuilder(activity);
+            instance = new AlertBuilder(activity,instance);
         }
 
         else if (activity.getClass() != instance.activity.getClass())
-            instance = new AlertBuilder(activity);
+            instance = new AlertBuilder(activity,instance);
 
-        else if (resetDefaults)
-            instance.resetDefaults();
+        if (resetDefaults)
+            instance.resetDefaults(null);
 
         return (AlertBuilder) instance;
 
     }
 
-    AlertBuilder(AppCompatActivity activity) {
+    AlertBuilder(AppCompatActivity activity, BaseBuilder settings) {
 
         try {
             this.activity = activity;
             this.root = activity.findViewById(android.R.id.content);
+            resetDefaults(settings);
             if (blurEnabled)
                 initBlurEffect();
 

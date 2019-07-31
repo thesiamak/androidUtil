@@ -8,10 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
-import ir.drax.modal.ListAlert.ListItem;
-
 public abstract class BaseBuilder{
     static BaseBuilder instance;
     AppCompatActivity activity;
@@ -28,9 +24,14 @@ public abstract class BaseBuilder{
     }
 
 
-    void resetDefaults() {
-        direction = Direction.FromBottom ;
-        blurEnabled=false;
+    void resetDefaults(BaseBuilder oldInstance) {
+        if (oldInstance==null) {
+            direction = Direction.FromBottom;
+            blurEnabled = false;
+        }else{
+            direction = oldInstance.getDirection();
+            blurEnabled = oldInstance.blurEnabled;
+        }
     }
 
     void initBlurEffect() {
@@ -79,16 +80,16 @@ public abstract class BaseBuilder{
     }
 
     public BaseBuilder setDirection(int direction){
-        //if (direction==Direction.FromBottom)
         this.direction=direction;
         return this;
     }
 
     public boolean hide(){
-        View bg = getLastView(root);
+        ViewGroup bg = (ViewGroup) getLastView(root);
         if (bg!=null){
-            View modal = bg.findViewById(R.id.modal_root);
+            View modal = bg.getChildAt(bg.getChildCount()-1);
             closeModal(modal,bg);
+            resetDefaults(null);
             return true;
         }
         return false;
@@ -140,11 +141,16 @@ public abstract class BaseBuilder{
         return AlertBuilder.getInstance(activity,false);
     }
 
+    public CustomBuilder typeCustomView(){
+        return CustomBuilder.getInstance(activity,false);
+    }
+
     void setViewDirection(View modal){
         if (((int)modal.getTag())==Direction.FromBottom)
-            modal.findViewById(R.id.modal_root).setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.top_curved_header));
+            modal.getRootView().setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.top_curved_header));
         else
-            modal.findViewById(R.id.modal_root).setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.bottom_curved_header));
+            modal.getRootView().setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.bottom_curved_header));
 
     }
+
 }

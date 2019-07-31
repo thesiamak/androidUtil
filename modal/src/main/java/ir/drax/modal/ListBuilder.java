@@ -8,7 +8,6 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,30 +22,32 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ir.drax.modal.ListAlert.ListItem;
+import ir.drax.modal.model.Button;
+import ir.drax.modal.model.ListItem;
 
 public class ListBuilder extends BaseBuilder{
 
     static ListBuilder getInstance(AppCompatActivity activity,boolean resetDefaults) {
 
         if (!(instance instanceof ListBuilder)){
-            instance = new ListBuilder(activity);
+            instance = new ListBuilder(activity,instance);
 
         } else if (activity.getClass() != instance.activity.getClass())
-            instance = new ListBuilder(activity);
+            instance = new ListBuilder(activity,instance);
 
-        else if (resetDefaults)
-            instance.resetDefaults();
+        if (resetDefaults)
+            instance.resetDefaults(null);
 
         return (ListBuilder) instance;
 
     }
 
-    ListBuilder(AppCompatActivity activity) {
+    ListBuilder(AppCompatActivity activity, BaseBuilder settings) {
 
         try {
             this.activity = activity;
             this.root = activity.findViewById(android.R.id.content);
+            resetDefaults(settings);
             if (blurEnabled)
                 initBlurEffect();
 
