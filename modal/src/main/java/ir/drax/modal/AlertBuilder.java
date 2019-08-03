@@ -160,4 +160,9 @@ public class AlertBuilder extends BaseBuilder {
             }
         });
     }
+
+    @Override
+    public AlertBuilder setLockVisibility(boolean lockVisibility) {
+        return (AlertBuilder)super.setLockVisibility(lockVisibility);
+    }
 }

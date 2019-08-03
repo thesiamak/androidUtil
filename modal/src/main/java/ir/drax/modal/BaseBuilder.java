@@ -16,7 +16,8 @@ public abstract class BaseBuilder{
     int direction = Direction.FromBottom;
     //private BlurView blurView;
     String ViewIdTag=getClass().getPackage().getName();
-    boolean blurEnabled = false , lockVisibility;
+    boolean blurEnabled = false , lockVisibility=false;
+
 
 
     static BaseBuilder getInstance(AppCompatActivity activity){
@@ -58,7 +59,9 @@ public abstract class BaseBuilder{
 
     }
 
-    void closeModal(View modal, final View bg) {
+    boolean closeModal(View modal, final View bg) {
+        if (lockVisibility)return false;
+
         modal.animate()
                 .translationY(
                         ((int)modal.getTag())==Direction.FromBottom?
@@ -77,6 +80,7 @@ public abstract class BaseBuilder{
                     }
                 })
                 .start();
+        return true;
     }
 
     public BaseBuilder setDirection(int direction){
@@ -88,9 +92,13 @@ public abstract class BaseBuilder{
         ViewGroup bg = (ViewGroup) getLastView(root);
         if (bg!=null){
             View modal = bg.getChildAt(bg.getChildCount()-1);
-            closeModal(modal,bg);
-            resetDefaults(null);
-            return true;
+            if (closeModal(modal,bg)) {
+                resetDefaults(null);
+                return true;
+
+            }else{
+                return false;
+            }
         }
         return false;
     }
@@ -130,6 +138,11 @@ public abstract class BaseBuilder{
     public BaseBuilder setBlurEnabled(boolean blurEnabled) {
         //if (blurEnabled && blurView==null)initBlurEffect();
         this.blurEnabled = blurEnabled;
+        return this;
+    }
+
+    public BaseBuilder setLockVisibility(boolean lockVisibility) {
+        this.lockVisibility= lockVisibility;
         return this;
     }
 

@@ -17,15 +17,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openModal(View view) {
-        Modal.builder(this).show("",getString(R.string.sample_text),R.drawable.ic_gesture_black_24dp);
-
+        Modal.builder(this)
+                .setLockVisibility(true)
+                .show("",getString(R.string.sample_text),R.drawable.ic_gesture_black_24dp);
     }
-
 
     @Override
     public void onBackPressed() {
         if (!Modal.builder(this).hide())
-        super.onBackPressed();
+
+            super.onBackPressed();
     }
 
     public void openModal2(View view) {
