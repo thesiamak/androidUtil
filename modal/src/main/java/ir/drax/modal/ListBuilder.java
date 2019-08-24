@@ -9,6 +9,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ir.drax.modal.model.Button;
-import ir.drax.modal.model.ListItem;
+import ir.drax.modal.model.MoButton;
 
 public class ListBuilder extends BaseBuilder{
 
@@ -57,12 +57,12 @@ public class ListBuilder extends BaseBuilder{
 
     }
 
-    public void show(String title, int icon , List<ListItem> list, Button summaryMessage , Button doneBtn){
+    public void show(String title, int icon , List<MoButton> list, MoButton summaryMessage , MoButton doneBtn){
 
         buildModal(title,icon,list,summaryMessage,doneBtn);
     }
 
-    void buildModal(CharSequence title, int icon , List<ListItem> list, Button summaryMessage , Button doneBtn){
+    void buildModal(CharSequence title, int icon , List<MoButton> list, MoButton summaryMessage , MoButton doneBtn){
 
         final View modal = ((LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.modal_list_layout,null,false);
         modal.setTag(direction);
@@ -73,7 +73,7 @@ public class ListBuilder extends BaseBuilder{
             TextView summary = modal.findViewById(R.id.text);
             summary.setText(summaryMessage.getTitle());
             summary.setCompoundDrawablesWithIntrinsicBounds(summaryMessage.getIcon(),0,0,0);
-            summary.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(summary.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
+            //summary.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(summary.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
 
         }
         if (!title.toString().isEmpty())
@@ -87,19 +87,21 @@ public class ListBuilder extends BaseBuilder{
             doneBtnView.setText(doneBtn.getTitle());
             doneBtnView.setCompoundDrawablesWithIntrinsicBounds(doneBtn.getIcon(),0,0,0);
             doneBtnView.setOnClickListener(doneBtn.getClickListener());
-            doneBtnView.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(doneBtnView.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
+            //doneBtnView.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(doneBtnView.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
         }
 
         ViewGroup listHolder =  modal.findViewById(R.id.listItems);
         LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        for (ListItem listItem : list) {
+        for (MoButton listItem : list) {
             TextView textView = new TextView(activity);
             textView.setText(listItem.getTitle());
+            //textView.setText(Html.fromHtml(""));
             textView.setTextColor(activity.getResources().getColor(R.color.black_faded));
             textView.setTypeface(doneBtnView.getTypeface());
-            textView.setCompoundDrawablesWithIntrinsicBounds(listItem.getIcon(),0,0,0);
+            textView.setCompoundDrawablesWithIntrinsicBounds(0,0,listItem.getIcon(),0);
+            textView.setCompoundDrawablePadding(8);
             //textView.tint(activity.getResources().getColorStateList();
-            textView.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(textView.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
+            //textView.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(textView.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
 
             textView.setOnClickListener(listItem.getClickListener());
             //textView.setBackgroundColor(activity.getResources().getColor(listHolder.getChildCount()%2==0?R.color.modal_list_item_odd:R.color.modal_list_item_even));

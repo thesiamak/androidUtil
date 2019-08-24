@@ -2,12 +2,12 @@ package ir.drax.modal.model;
 
 import android.view.View;
 
-public class ListItem {
+public class MoButton {
     private CharSequence title;
     private int icon;
     private View.OnClickListener clickListener;
 
-    public ListItem(CharSequence title, int icon, View.OnClickListener clickListener) {
+    public MoButton(CharSequence title, int icon, View.OnClickListener clickListener) {
         this.title = title;
         this.icon = icon;
         this.clickListener = clickListener;

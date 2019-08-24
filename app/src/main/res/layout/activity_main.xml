@@ -42,6 +42,14 @@
             android:onClick="openModal2"
             android:text="Open Custom Modal" />
 
+        <Button
+            android:id="@+id/modalBtn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="openListModal"
+            android:text="Open List Modal" />
+
+
     </LinearLayout>
 
 </RelativeLayout>
