@@ -5,9 +5,9 @@ import android.view.View;
 public class MoButton {
     private CharSequence title;
     private int icon;
-    private View.OnClickListener clickListener;
+    private OnClickListener clickListener;
 
-    public MoButton(CharSequence title, int icon, View.OnClickListener clickListener) {
+    public MoButton(CharSequence title, int icon, OnClickListener clickListener) {
         this.title = title;
         this.icon = icon;
         this.clickListener = clickListener;
@@ -21,7 +21,11 @@ public class MoButton {
         return icon;
     }
 
-    public View.OnClickListener getClickListener() {
+    public OnClickListener getClickListener() {
         return clickListener;
+    }
+
+    public interface  OnClickListener{
+        public boolean onClick(View v);
     }
 }

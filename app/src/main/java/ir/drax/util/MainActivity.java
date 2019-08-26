@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ir.drax.modal.BaseBuilder;
 import ir.drax.modal.Direction;
 import ir.drax.modal.Modal;
 import ir.drax.modal.model.MoButton;
@@ -24,7 +25,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void openModal(View view) {
         Modal.builder(this)
-                .show("",getString(R.string.sample_text),R.drawable.ic_gesture_black_24dp);
+                .setListener(new BaseBuilder.Listener() {
+                    @Override
+                    public void onDismiss() {
+                        Toast.makeText(MainActivity.this, "dismissed!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onShow() {
+                        Toast.makeText(MainActivity.this, "showed!", Toast.LENGTH_SHORT).show();
+                    }
+                }).typeAlert()
+                .show("",getString(R.string.sample_text),R.drawable.ic_gesture_black_24dp
+                ,new MoButton("Got it !!!!", R.drawable.ic_mood_black_24dp, new MoButton.OnClickListener() {
+                            @Override
+                            public boolean onClick(View v) {
+                                Toast.makeText(MainActivity.this, "closed!", Toast.LENGTH_SHORT).show();
+                                return true;
+                            }
+                        }));
     }
 
     public void openListModal(View view) {
@@ -40,11 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 .typeList().show("Sample list modal",R.drawable.ic_gesture_black_24dp,
                 buttonList
                 ,new MoButton("2706 Total",R.drawable.ic_attach_money_black_24dp,null)
-                ,new MoButton("Share", R.drawable.ic_share_black_24dp, new View.OnClickListener() {
+                ,new MoButton("Share", R.drawable.ic_share_black_24dp, new MoButton.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onClick(View v) {
                         Toast.makeText(MainActivity.this, "build a share intent here ...", Toast.LENGTH_SHORT).show();
                         onBackPressed();//Hide the modal..
+                        return true;
                     }
                 }));
     }

@@ -16,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ir.drax.modal.model.MoButton;
+
 public class AlertBuilder extends BaseBuilder {
 
 
@@ -50,24 +52,40 @@ public class AlertBuilder extends BaseBuilder {
 
     }
 
+    public void show(CharSequence title ,CharSequence message, int icon ,MoButton reAction){
+        buildModal(title,message,icon,reAction);
+    }
     public void show(CharSequence title ,CharSequence message, int icon){
-        buildModal(title,message,icon);
+        buildModal(title,message,icon,null);
     }
     public void show(CharSequence title ,CharSequence message){
-        buildModal(title,message,0);
+        buildModal(title,message,0,null );
     }
     public void show(int title , int message){
-        buildModal(activity.getString(title) , activity.getString(message),0);
+        buildModal(activity.getString(title) , activity.getString(message),0,null );
     }
     public void show(CharSequence message){
-        buildModal("",message,0);
+        buildModal("",message,0,null);
     }
     public void show(int message){
-        buildModal("",activity.getString(message),0);
+        buildModal("",activity.getString(message),0,null);
+    }
+
+    public void show(CharSequence title ,CharSequence message,MoButton reAction){
+        buildModal(title,message,0,reAction );
+    }
+    public void show(int title , int message,MoButton reAction){
+        buildModal(activity.getString(title) , activity.getString(message),0,reAction );
+    }
+    public void show(CharSequence message,MoButton reAction){
+        buildModal("",message,0,reAction);
+    }
+    public void show(int message,MoButton reAction){
+        buildModal("",activity.getString(message),0,reAction);
     }
 
 
-    void buildModal(CharSequence title, CharSequence message , int icon){
+    void buildModal(CharSequence title, CharSequence message , int icon, final MoButton reAction){
 
         final View modal = ((LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.modal_alert_layout,null,false);
         modal.setTag(direction);
@@ -134,7 +152,20 @@ public class AlertBuilder extends BaseBuilder {
 
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                View ok = modal.findViewById(R.id.ok);
+                                TextView ok = modal.findViewById(R.id.ok);
+                                if (reAction!=null){
+                                    ok.setText(reAction.getTitle());
+                                    ok.setCompoundDrawablesWithIntrinsicBounds(reAction.getIcon(),0,0,0);
+                                    ok.setCompoundDrawablePadding(4);
+                                    ok.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (reAction.getClickListener()!=null)
+                                                if (reAction.getClickListener().onClick(v))
+                                                    closeModal(modal,bg);
+                                        }
+                                    });
+                                }
                                 ok.animate()
                                         .translationY(
                                                 ((int)modal.getTag())==Direction.FromBottom?
@@ -142,6 +173,9 @@ public class AlertBuilder extends BaseBuilder {
                                         .setDuration(400)
                                         .setInterpolator(new CycleInterpolator(0.1f))
                                         .start();
+
+                                if (listener != null)listener.onShow();
+
                                 super.onAnimationEnd(animation);
                                 blurEffect(true);
                             }

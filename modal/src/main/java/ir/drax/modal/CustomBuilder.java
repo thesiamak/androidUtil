@@ -124,6 +124,7 @@ public class CustomBuilder extends BaseBuilder {
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
                                     blurEffect(true);
+                                    if (listener != null)listener.onShow();
                                 }
                             })
                             .translationY(

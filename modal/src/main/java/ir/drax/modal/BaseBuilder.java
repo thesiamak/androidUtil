@@ -17,6 +17,7 @@ public abstract class BaseBuilder{
     //private BlurView blurView;
     String ViewIdTag=getClass().getPackage().getName();
     boolean blurEnabled = false , lockVisibility=false;
+    Listener listener;
 
 
 
@@ -29,9 +30,12 @@ public abstract class BaseBuilder{
         if (oldInstance==null) {
             direction = Direction.FromBottom;
             blurEnabled = false;
+            listener = null;
+
         }else{
             direction = oldInstance.getDirection();
             blurEnabled = oldInstance.blurEnabled;
+            listener = oldInstance.listener;
         }
     }
 
@@ -76,6 +80,10 @@ public abstract class BaseBuilder{
                         }
                         root.removeView(bg);
                         blurEffect(false);
+
+                        if (listener!=null)
+                            listener.onDismiss();
+
                         super.onAnimationEnd(animation);
                     }
                 })
@@ -166,4 +174,13 @@ public abstract class BaseBuilder{
 
     }
 
+    public BaseBuilder setListener(Listener listener) {
+        this.listener = listener;
+        return this;
+    }
+
+    public interface Listener{
+        public void onDismiss();
+        public void onShow();
+    }
 }

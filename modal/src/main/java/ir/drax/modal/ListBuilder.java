@@ -62,7 +62,7 @@ public class ListBuilder extends BaseBuilder{
         buildModal(title,icon,list,summaryMessage,doneBtn);
     }
 
-    void buildModal(CharSequence title, int icon , List<MoButton> list, MoButton summaryMessage , MoButton doneBtn){
+    void buildModal(CharSequence title, int icon , List<MoButton> list, MoButton summaryMessage , final MoButton doneBtn){
 
         final View modal = ((LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.modal_list_layout,null,false);
         modal.setTag(direction);
@@ -86,13 +86,18 @@ public class ListBuilder extends BaseBuilder{
         if (doneBtn != null) {
             doneBtnView.setText(doneBtn.getTitle());
             doneBtnView.setCompoundDrawablesWithIntrinsicBounds(doneBtn.getIcon(),0,0,0);
-            doneBtnView.setOnClickListener(doneBtn.getClickListener());
+            doneBtnView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doneBtn.getClickListener().onClick(v);
+                }
+            });
             //doneBtnView.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(doneBtnView.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
         }
 
         ViewGroup listHolder =  modal.findViewById(R.id.listItems);
         LinearLayout.LayoutParams itemLP = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        for (MoButton listItem : list) {
+        for (final MoButton listItem : list) {
             TextView textView = new TextView(activity);
             textView.setText(listItem.getTitle());
             //textView.setText(Html.fromHtml(""));
@@ -103,7 +108,12 @@ public class ListBuilder extends BaseBuilder{
             //textView.tint(activity.getResources().getColorStateList();
             //textView.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(textView.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
 
-            textView.setOnClickListener(listItem.getClickListener());
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listItem.getClickListener().onClick(v);
+                }
+            });
             //textView.setBackgroundColor(activity.getResources().getColor(listHolder.getChildCount()%2==0?R.color.modal_list_item_odd:R.color.modal_list_item_even));
             //textView.setBackgroundResource(R.drawable.list_item_bg);
             textView.setPadding(32,16,32,16);
@@ -173,6 +183,9 @@ public class ListBuilder extends BaseBuilder{
                                         .setDuration(400)
                                         .setInterpolator(new CycleInterpolator(0.1f))
                                         .start();
+
+                                if (listener != null)listener.onShow();
+
                                 super.onAnimationEnd(animation);
                                 blurEffect(true);
                             }
