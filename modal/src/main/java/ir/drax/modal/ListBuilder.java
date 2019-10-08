@@ -62,20 +62,28 @@ public class ListBuilder extends BaseBuilder{
         buildModal(title,icon,list,summaryMessage,doneBtn);
     }
 
-    void buildModal(CharSequence title, int icon , List<MoButton> list, MoButton summaryMessage , final MoButton doneBtn){
+    void buildModal(CharSequence title, int icon , List<MoButton> list, final MoButton summaryMessage , final MoButton doneBtn){
 
         final View modal = ((LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.modal_list_layout,null,false);
+        final FrameLayout bg = new FrameLayout(activity);
         modal.setTag(direction);
         setViewDirection(modal);
         modal.setVisibility(View.INVISIBLE);
 
         if (!summaryMessage.toString().isEmpty()) {
-            TextView summary = modal.findViewById(R.id.text);
+            final TextView summary = modal.findViewById(R.id.text);
             summary.setText(summaryMessage.getTitle());
             summary.setCompoundDrawablesWithIntrinsicBounds(summaryMessage.getIcon(),0,0,0);
-            //summary.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(summary.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
-
+            summary.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (summaryMessage.getClickListener()!=null)
+                        if (summaryMessage.getClickListener().onClick(v))
+                            closeModal(modal,bg);
+                }
+            });
         }
+
         if (!title.toString().isEmpty())
             ((TextView)modal.findViewById(R.id.title)).setText(title);
 
@@ -89,7 +97,9 @@ public class ListBuilder extends BaseBuilder{
             doneBtnView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    doneBtn.getClickListener().onClick(v);
+                    if (doneBtn.getClickListener()!=null)
+                        if(doneBtn.getClickListener().onClick(v))
+                            closeModal(modal,bg);
                 }
             });
             //doneBtnView.getCompoundDrawables()[0].setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(doneBtnView.getContext(), R.color.grey), PorterDuff.Mode.SRC_IN));
@@ -125,8 +135,6 @@ public class ListBuilder extends BaseBuilder{
             listHolder.addView(divider,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,5));
         }
 
-
-        final FrameLayout bg = new FrameLayout(activity);
         bg.setTag(ViewIdTag);
 
         bg.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.modal_root_transition));
