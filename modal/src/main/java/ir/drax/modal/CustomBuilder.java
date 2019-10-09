@@ -27,6 +27,9 @@ public class CustomBuilder extends BaseBuilder {
         else if (activity.getClass() != instance.activity.getClass())
             instance = new CustomBuilder(activity, instance);
 
+        else if (activity.hashCode() != instance.activity.hashCode())
+            instance = new CustomBuilder(activity, instance);
+
         if (resetDefaults)
             instance.resetDefaults(null);
 

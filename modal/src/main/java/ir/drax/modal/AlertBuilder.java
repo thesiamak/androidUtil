@@ -30,6 +30,9 @@ public class AlertBuilder extends BaseBuilder {
         else if (activity.getClass() != instance.activity.getClass())
             instance = new AlertBuilder(activity,instance);
 
+        else if (activity.hashCode() != instance.activity.hashCode())
+            instance = new AlertBuilder(activity,instance);
+
         if (resetDefaults)
             instance.resetDefaults(null);
 

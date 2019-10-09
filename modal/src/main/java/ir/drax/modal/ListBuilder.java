@@ -35,6 +35,9 @@ public class ListBuilder extends BaseBuilder{
         } else if (activity.getClass() != instance.activity.getClass())
             instance = new ListBuilder(activity,instance);
 
+         else if (activity.hashCode() != instance.activity.hashCode())
+            instance = new ListBuilder(activity,instance);
+
         if (resetDefaults)
             instance.resetDefaults(null);
 
