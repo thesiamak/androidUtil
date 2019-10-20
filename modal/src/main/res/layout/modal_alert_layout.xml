@@ -48,7 +48,7 @@
         android:textSize="14sp"
         android:textAlignment="center"
         android:gravity="center"
-        android:layout_below="@id/close"
+        android:layout_below="@id/title"
         android:layout_toEndOf="@id/icon"
         android:text="dsfsfdsfdsfsdf"
         android:textColor="@color/modal_text_icon"

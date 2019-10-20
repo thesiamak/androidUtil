@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "showed!", Toast.LENGTH_SHORT).show();
                     }
                 }).typeAlert()
-                .show("",getString(R.string.sample_text),R.drawable.ic_gesture_black_24dp
+                .show(" کردن قیمت در صفحه waitingpassenger در اپهای مسافر و راننده اعمال نمی شود.",getString(R.string.sample_text),R.drawable.ic_gesture_black_24dp
                 ,new MoButton("Got it !!!!", R.drawable.ic_mood_black_24dp, new MoButton.OnClickListener() {
                             @Override
                             public boolean onClick(View v) {
