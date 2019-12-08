@@ -124,7 +124,7 @@ public class ListBuilder extends BaseBuilder{
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listItem.getClickListener().onClick(v);
+                    if (listItem.getClickListener()!=null)listItem.getClickListener().onClick(v);
                 }
             });
             //textView.setBackgroundColor(activity.getResources().getColor(listHolder.getChildCount()%2==0?R.color.modal_list_item_odd:R.color.modal_list_item_even));
