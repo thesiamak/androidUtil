@@ -9,4 +9,5 @@
     <color name="grey">#e9e9e9</color>
     <color name="orange">#BB7E13</color>
     <color name="transparent">#00000000</color>
+    <color name="modal_text">#343434</color>
 </resources>

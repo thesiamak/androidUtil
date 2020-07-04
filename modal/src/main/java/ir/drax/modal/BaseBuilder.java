@@ -161,6 +161,9 @@ public abstract class BaseBuilder{
     public AlertBuilder typeAlert(){
         return AlertBuilder.getInstance(activity,false);
     }
+    public ProgressBuilder typeProgress(){
+        return ProgressBuilder.getInstance(activity,false);
+    }
 
     public CustomBuilder typeCustomView(){
         return CustomBuilder.getInstance(activity,false);

@@ -1,17 +1,22 @@
 package ir.drax.util;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ir.drax.modal.BaseBuilder;
 import ir.drax.modal.Direction;
 import ir.drax.modal.Modal;
+import ir.drax.modal.ProgressBuilder;
 import ir.drax.modal.model.MoButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -82,5 +87,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void hideModal(View view) {
         onBackPressed();
+    }
+
+    private ProgressBuilder progressBuilder;
+    public void openProgressModal(View view) {
+         if (progressBuilder==null)
+             progressBuilder = Modal.builder(this)
+                     .setListener(new BaseBuilder.Listener() {
+                         @Override
+                         public void onDismiss() {
+
+                         }
+
+                         @Override
+                         public void onShow() {
+                             new Thread(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     while (progressBuilder.getProgress()<100){
+                                         try {
+                                             Thread.sleep(100);
+                                             runOnUiThread(()->{
+                                                 progressBuilder.setProgress(progressBuilder.getProgress()+1);
+                                             });
+                                         } catch (InterruptedException e) {
+                                             e.printStackTrace();
+                                         }
+                                     }
+                                 }
+                             }).start();
+                         }
+                     }).typeProgress().show("Uploading","Uploading file: readme.txt",R.drawable.ic_baseline_cloud_queue_24,0);
+
+         else progressBuilder.show();
     }
 }

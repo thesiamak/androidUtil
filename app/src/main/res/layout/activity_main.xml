@@ -49,6 +49,16 @@
             android:onClick="openListModal"
             android:text="Open List Modal" />
 
+        <Button
+            android:id="@+id/progressModal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="openProgressModal"
+            android:text="Open Progress Modal" />
+
+
+
+
 
     </LinearLayout>
 
