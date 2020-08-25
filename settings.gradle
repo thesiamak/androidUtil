@@ -1,1 +1,2 @@
-include ':app', ':modal'
+include ':app:'
+include ':expandable', ':modal'
