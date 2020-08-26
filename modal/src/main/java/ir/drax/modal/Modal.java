@@ -1,6 +1,7 @@
 package ir.drax.modal;
 
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Modal {
     public static AlertBuilder builder(AppCompatActivity activity){

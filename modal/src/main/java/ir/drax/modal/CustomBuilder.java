@@ -5,8 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class CustomBuilder extends BaseBuilder {
 

@@ -1,6 +1,7 @@
 package ir.drax.modal.model;
 
-import android.arch.lifecycle.LiveData;
+
+import androidx.lifecycle.LiveData;
 
 
 public class ProgressModel extends LiveData<ProgressModel> {

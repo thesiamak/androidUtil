@@ -1,18 +1,21 @@
 package ir.drax.util;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ImageViewCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ir.drax.expandable.Expandable;
 import ir.drax.modal.BaseBuilder;
 import ir.drax.modal.Direction;
 import ir.drax.modal.Modal;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //openModal(this);
+        initExpandable();
     }
 
     public void openModal(View view) {
@@ -104,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                              new Thread(new Runnable() {
                                  @Override
                                  public void run() {
-                                     while (progressBuilder.getProgress()<100){
+                                     while (progressBuilder.getProgress()<99){
                                          try {
                                              Thread.sleep(100);
                                              runOnUiThread(()->{
@@ -120,5 +124,23 @@ public class MainActivity extends AppCompatActivity {
                      }).typeProgress().show("Uploading","Uploading file: readme.txt",R.drawable.ic_baseline_cloud_queue_24,0);
 
          else progressBuilder.show();
+    }
+
+    private void initExpandable(){
+        Expandable expandable= findViewById(R.id.myExpandable);
+
+        TextView textView=new TextView(this);
+        textView.setText("Heyyy, I'm a Textview with a message.\nA second line is provided as well.");
+        textView.setTextColor(Color.WHITE);
+
+        ImageView imageView=new ImageView(this);
+        imageView.setImageResource(R.drawable.ic_close_black_12dp);
+        ImageViewCompat.setImageTintList(imageView,ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+
+        imageView.setOnClickListener(v->expandable.collapse());
+
+        expandable.setTitle("My expandable list");
+        expandable.setIcon(R.drawable.ic_build_black_24dp);
+        expandable.addChild(textView,imageView);
     }
 }

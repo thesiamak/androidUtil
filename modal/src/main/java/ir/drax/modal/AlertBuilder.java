@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +15,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import ir.drax.modal.model.MoButton;
 
 public class AlertBuilder extends BaseBuilder {
 
 
-    static AlertBuilder getInstance(AppCompatActivity activity,boolean resetDefaults) {
+    static AlertBuilder getInstance(AppCompatActivity activity, boolean resetDefaults) {
 
         if (!(instance instanceof AlertBuilder)){
             instance = new AlertBuilder(activity,instance);

@@ -4,9 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class BaseBuilder{
     static BaseBuilder instance;

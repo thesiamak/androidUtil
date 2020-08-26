@@ -2,23 +2,22 @@ package ir.drax.modal;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.CycleInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 
 import ir.drax.modal.model.ProgressModel;
 
