@@ -1,4 +1,4 @@
-package ir.drax.modal;
+package ir.drax.modal.model;
 
 public class Direction {
     public static int FromTop=1;

@@ -3,18 +3,18 @@ package ir.drax.modal.model;
 import android.view.View;
 
 public class MoButton {
-    private CharSequence title;
+    private CharSequence text;
     private int icon;
     private OnClickListener clickListener;
 
-    public MoButton(CharSequence title, int icon, OnClickListener clickListener) {
-        this.title = title;
+    public MoButton(CharSequence text, int icon, OnClickListener clickListener) {
+        this.text = text;
         this.icon = icon;
         this.clickListener = clickListener;
     }
 
-    public CharSequence getTitle() {
-        return title;
+    public CharSequence getText() {
+        return text;
     }
 
     public int getIcon() {

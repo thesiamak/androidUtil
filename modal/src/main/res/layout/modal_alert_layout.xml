@@ -67,6 +67,8 @@
         android:layout_marginTop="24dp"
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
+        android:minWidth="150dp"
+        android:gravity="center"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:background="@drawable/bottom_button"
