@@ -17,10 +17,8 @@ import java.util.List;
 
 import ir.drax.expandable.Expandable;
 import ir.drax.modal.BaseBuilder;
-import ir.drax.modal.Direction;
 import ir.drax.modal.Modal;
 import ir.drax.modal.ProgressBuilder;
-import ir.drax.modal.model.MoButton;
 
 public class MainActivity extends AppCompatActivity {
 

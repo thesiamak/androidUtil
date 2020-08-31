@@ -26,7 +26,6 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
     }
 
     private fun setup(){
-
         LayoutInflater.from(context).inflate(R.layout.expandable_layout,this,true)
 
         observableState.addObserver(this)
