@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/icon" />
     <TextView
-        android:text="20%"
+        android:text=""
         android:layout_below="@id/text"
         android:textSize="14sp"
         android:padding="4dp"
@@ -84,4 +84,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/percentage" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/ok"
+        android:layout_below="@id/text"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textColor="@color/black_faded"
+        android:layout_marginTop="24dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:minWidth="150dp"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/bottom_button"
+        android:text="@string/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
