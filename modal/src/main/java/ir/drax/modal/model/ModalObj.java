@@ -8,14 +8,12 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import ir.drax.modal.Modal;
-
 public class ModalObj extends LiveData<ModalObj> {
     private CharSequence title="";
     private MoButton message=new MoButton("",0,null);
     private int icon;
     private MoButton reAction;
-    private int direction = Direction.FromBottom;
+    private int direction = Direction.BottomToTop;
     private ViewGroup root;
     public static String ViewIdTag= ModalObj.class.getSimpleName();
     private boolean blurEnabled = false;

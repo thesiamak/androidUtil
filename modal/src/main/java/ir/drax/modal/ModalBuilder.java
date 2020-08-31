@@ -95,7 +95,7 @@ public class ModalBuilder extends RelativeLayout implements Observer, androidx.l
                 ViewTreeObserver obs = root.getViewTreeObserver();
 
                 FrameLayout.LayoutParams fLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.WRAP_CONTENT);
-                if (((int)getTag())== Direction.FromBottom) {
+                if (((int)getTag())== Direction.BottomToTop) {
                     fLayoutParams.gravity = Gravity.BOTTOM;
                     fLayoutParams.bottomMargin = getHeight() * -1;
 
@@ -128,7 +128,7 @@ public class ModalBuilder extends RelativeLayout implements Observer, androidx.l
                                     findViewById(R.id.ok)
                                             .animate()
                                             .translationY(
-                                                    ((int)getTag())==Direction.FromBottom?
+                                                    ((int)getTag())==Direction.BottomToTop ?
                                                             -16:0)
                                             .setDuration(400)
                                             .setInterpolator(new CycleInterpolator(0.1f))
@@ -140,7 +140,7 @@ public class ModalBuilder extends RelativeLayout implements Observer, androidx.l
                             }
                         })
                         .translationY(
-                                ((int)getTag())==Direction.FromBottom?
+                                ((int)getTag())==Direction.BottomToTop ?
                                         -getHeight() : getHeight())
                         .setDuration(500)
                         .start();
@@ -250,7 +250,7 @@ public class ModalBuilder extends RelativeLayout implements Observer, androidx.l
     }
 
     void setViewDirection(){
-        if (((int)getTag())==Direction.FromBottom)
+        if (((int)getTag())==Direction.BottomToTop)
             setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.top_curved_header,null));
         else
             setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.bottom_curved_header,null));
@@ -286,7 +286,7 @@ public class ModalBuilder extends RelativeLayout implements Observer, androidx.l
 
         animate()
                 .translationY(
-                        ((int)getTag())==Direction.FromBottom?
+                        ((int)getTag())==Direction.BottomToTop ?
                                 getHeight() : -getHeight())
                 .setDuration(250)
                 .setListener(new AnimatorListenerAdapter() {

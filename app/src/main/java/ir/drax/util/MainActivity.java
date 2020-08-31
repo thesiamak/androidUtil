@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ir.drax.expandable.Expandable;
+import ir.drax.modal.Modal;
 import ir.drax.modal.model.Direction;
 import ir.drax.modal.model.Listener;
-import ir.drax.modal.Modal;
 import ir.drax.modal.ModalBuilder;
 import ir.drax.modal.model.MoButton;
 
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onShow() {
                         Toast.makeText(MainActivity.this, "showed!", Toast.LENGTH_SHORT).show();
                     }
-                }).setType(Modal.Type.Alert)
+                }).setType(Modal.Companion.Type.Alert)
                 .setTitle("رند کردن قیمت در صفحه waitingpassenger در اپهای مسافر و راننده اعمال نمی شود.")
                 .setMessage(getString(R.string.sample_text))
                 .setIcon(R.drawable.ic_gesture_black_24dp)
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         buttonList.add(new MoButton(Html.fromHtml("Discount :  <u>$500 Dollars</u>"),R.drawable.ic_mood_black_24dp,null));
 
         Modal.builder(this)
-                .setType(Modal.Type.List)
+                .setType(Modal.Companion().Type.List)
                 .setTitle("Sample list modal")
                 .setIcon(R.drawable.ic_gesture_black_24dp)
                 .setList(buttonList)
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openModal2(View view) {
         Modal.builder(this)
-                .setDirection(Direction.FromTop)
+                .setDirection(Direction.TopToBottom)
                 .setType(Modal.Type.Custom)
                 .setContentView(R.layout.sample_layout)
         .build().show();
