@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ir.drax.expandable.Expandable;
+import ir.drax.modal.Listener;
 import ir.drax.modal.Modal;
-import ir.drax.modal.model.Direction;
-import ir.drax.modal.model.Listener;
 import ir.drax.modal.ModalBuilder;
 import ir.drax.modal.model.MoButton;
+import ir.drax.modal.model.OnClickListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onShow() {
                         Toast.makeText(MainActivity.this, "showed!", Toast.LENGTH_SHORT).show();
                     }
-                }).setType(Modal.Companion.Type.Alert)
+                }).setType(Modal.Type.Alert)
                 .setTitle("رند کردن قیمت در صفحه waitingpassenger در اپهای مسافر و راننده اعمال نمی شود.")
                 .setMessage(getString(R.string.sample_text))
                 .setIcon(R.drawable.ic_gesture_black_24dp)
-                .setCallback(new MoButton("Got it !!!!", R.drawable.ic_mood_black_24dp, new MoButton.OnClickListener() {
+                .setCallback(new MoButton("Got it !!!!", R.drawable.ic_mood_black_24dp, new OnClickListener() {
                     @Override
                     public boolean onClick(View v) {
                         Toast.makeText(MainActivity.this, "closed!", Toast.LENGTH_SHORT).show();
@@ -72,12 +73,12 @@ public class MainActivity extends AppCompatActivity {
         buttonList.add(new MoButton(Html.fromHtml("Discount :  <u>$500 Dollars</u>"),R.drawable.ic_mood_black_24dp,null));
 
         Modal.builder(this)
-                .setType(Modal.Companion().Type.List)
+                .setType(Modal.Type.List)
                 .setTitle("Sample list modal")
                 .setIcon(R.drawable.ic_gesture_black_24dp)
                 .setList(buttonList)
                 .setMessage(new MoButton("2706 Total",R.drawable.ic_attach_money_black_24dp,null))
-                .setCallback(new MoButton("Share", R.drawable.ic_share_black_24dp, new MoButton.OnClickListener() {
+                .setCallback(new MoButton("Share", R.drawable.ic_share_black_24dp, new OnClickListener() {
                     @Override
                     public boolean onClick(View v) {
                         Toast.makeText(MainActivity.this, "Throw an intent here ...", Toast.LENGTH_SHORT).show();
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openModal2(View view) {
         Modal.builder(this)
-                .setDirection(Direction.TopToBottom)
+                .setDirection(Modal.Direction.TopToBottom)
                 .setType(Modal.Type.Custom)
                 .setContentView(R.layout.sample_layout)
         .build().show();
@@ -122,11 +123,12 @@ public class MainActivity extends AppCompatActivity {
                              new Thread(new Runnable() {
                                  @Override
                                  public void run() {
-                                     while (progressBuilder.state().getProgress()<99){
+                                     while (progressBuilder.getState().getProgress()<99){
                                          try {
                                              Thread.sleep(100);
                                              runOnUiThread(()->{
-                                                 progressBuilder.state().setProgress(progressBuilder.state().getProgress()+1);
+                                                 Log.e("ssss","ss");
+                                                 progressBuilder.getState().setProgress(progressBuilder.getState().getProgress()+1);
                                              });
                                          } catch (InterruptedException e) {
                                              e.printStackTrace();
