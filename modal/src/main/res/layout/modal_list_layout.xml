@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/modal_root"
     android:orientation="vertical"
     android:layout_width="match_parent"
     style="@style/modal_root"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
         android:id="@+id/close"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:padding="8dp"
         app:srcCompat="@drawable/ic_close_black_12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
+        />
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:padding="8dp"
         android:tint="#FF000000"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/title"
@@ -33,23 +32,28 @@
         android:textAlignment="center"
         android:gravity="center"
         android:padding="8dp"
-        android:layout_toStartOf="@id/close"
-        android:layout_toLeftOf="@id/close"
-        android:layout_toEndOf="@id/icon"
-        android:text=""
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintEnd_toStartOf="@id/close"
         android:textColor="@color/modal_title"
         android:textStyle="bold"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/icon" />
+        android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_below="@id/close"
-        android:layout_margin="16dp"
-        android:orientation="vertical"
-        android:id="@+id/listItems"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/listScrollView"
+        app:layout_constraintTop_toBottomOf="@id/close"
+        app:layout_constraintBottom_toTopOf="@id/text"
+        android:layout_margin="16dp"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/listItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
 
     <TextView
         android:autoLink="all"
@@ -59,21 +63,22 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:gravity="center"
-        android:layout_below="@id/listItems"
+        app:layout_constraintBottom_toTopOf="@id/ok"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:textColor="@color/modal_text_icon"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
          />
 
     <TextView
         android:id="@+id/ok"
-        android:layout_below="@id/text"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:textStyle="bold"
         android:textColor="@color/black_faded"
         android:layout_marginTop="24dp"
@@ -87,4 +92,4 @@
         android:text="@string/ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

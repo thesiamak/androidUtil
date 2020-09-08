@@ -67,6 +67,14 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
 
                 layoutParams=fLayoutParams
 
+                if (state.type==Modal.Type.List)
+                    findViewById<View>(R.id.listScrollView).apply {
+                        if (measuredHeight>bg.height) {
+                            layoutParams.height = (bg.layoutParams.height * 0.8).toInt()
+
+                        }
+                    }
+
                 animate()
                         .setStartDelay(250)
                         .setListener(object :AnimatorListenerAdapter(){
@@ -113,9 +121,9 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                 summary.setCompoundDrawablesWithIntrinsicBounds(state.message.icon,0,0,0)
                 summary.setOnClickListener {
                     state.message.clickListener?.let {
-                    if (it.onClick(summary))
-                        closeModal(header)
-                }}
+                        if (it.onClick(summary))
+                            closeModal(header)
+                    }}
             }
 
 
@@ -182,7 +190,12 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                 textView.compoundDrawablePadding=8
                 textView.setPadding(32,16,32,16)
                 textView.setOnClickListener {view->
-                    each.clickListener?.let { it.onClick(view) }
+                    each.clickListener?.let {
+                        if(it.onClick(view)){
+                            state.lockVisibility=false
+                            closeModal(bg)
+                        }
+                    }
                 }
 
                 listHolder.addView(textView,itemLP)
