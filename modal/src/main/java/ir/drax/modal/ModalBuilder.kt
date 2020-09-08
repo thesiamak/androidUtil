@@ -40,6 +40,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
     }
 
     fun  hide(){
+        state.lockVisibility=false
         closeModal(bg)
     }
 
