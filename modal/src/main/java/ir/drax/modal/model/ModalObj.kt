@@ -46,7 +46,7 @@ open class ModalObj @JvmOverloads constructor(
             postValue(changedIndex(2))
         }
 
-    var reAction: MoButton? =null
+    var callback: MoButton? =null
         set(value) {
             field=value
             postValue(changedIndex(3))

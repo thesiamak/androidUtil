@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.TransitionDrawable
 import android.os.Build
-import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -68,9 +67,11 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                 layoutParams=fLayoutParams
 
                 if (state.type==Modal.Type.List)
-                    findViewById<View>(R.id.listScrollView).apply {
-                        if (measuredHeight>bg.height) {
-                            layoutParams.height = (bg.layoutParams.height * 0.8).toInt()
+                    findViewById<ScrollView>(R.id.listScrollView).also {
+                        print(it.layoutParams.height)
+                        print(it.measuredHeight)
+                        if (it.measuredHeight>(bg.height * .7)) {
+                            it.layoutParams.height = (bg.height * .7).toInt()
 
                         }
                     }
@@ -164,13 +165,14 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
 
     private fun setCallback(){
         if (state.type!=Modal.Type.Custom){
-            state.reAction?.let { cb ->
-                val doneBtnView=findViewById<TextView>(R.id.ok)
-                doneBtnView.setCompoundDrawablesWithIntrinsicBounds(cb.icon,0,0,0)
-                doneBtnView.setOnClickListener { cb.clickListener?.let {
-                    if (it.onClick(doneBtnView))
+            state.callback?.let { cb ->
+                findViewById<TextView>(R.id.ok).apply {
+                setCompoundDrawablesWithIntrinsicBounds(cb.icon,0,0,0)
+                setOnClickListener { cb.clickListener?.let {
+                    if (it.onClick(this))
                         closeModal(bg)
                 }}
+                }
             }
 
         }
