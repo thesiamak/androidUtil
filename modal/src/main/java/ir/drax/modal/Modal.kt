@@ -25,7 +25,6 @@ class Modal {
             return if (bg == null) false
             else{
                 val modal=bg.getChildAt(bg.childCount-1) as ModalBuilder
-                modal.state.lockVisibility=false
                 modal.closeModal(bg)
             }
 
