@@ -1,11 +1,12 @@
 package ir.drax.expandable
 
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.Transformation
 
-class ResizeAnimation(val view:View, val targetHeight:Int, val startHeight:Int, val interpolate:Interpolate?=null): Animation() {
+class ResizeAnimation(private val view:View, private val targetHeight:Int, private val startHeight:Int, private val interpolate:Interpolate?=null): Animation() {
     init {
         interpolator=AccelerateDecelerateInterpolator()
     }
@@ -15,6 +16,8 @@ class ResizeAnimation(val view:View, val targetHeight:Int, val startHeight:Int, 
     }
 
     override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
+        if (interpolatedTime==1f)return // To stop any extra layout changes right after the animation ended-> To avoid threshold bugs
+        Log.e("Transform","sss$interpolatedTime")
         val newHeight = startHeight + (targetHeight - startHeight) * interpolatedTime
         //to support decent animation, change new heigt as Nico S. recommended in comments
         //int newHeight = (int) (startHeight+(targetHeight - startHeight) * interpolatedTime);

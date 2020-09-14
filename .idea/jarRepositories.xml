@@ -51,5 +51,20 @@
       <option name="name" value="/mnt/d0180270-3b06-4e32-a91b-d2acfac9fd39/linSdk/extras/google/m2repository" />
       <option name="url" value="file:/mnt/d0180270-3b06-4e32-a91b-d2acfac9fd39/linSdk/extras/google/m2repository/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="/mnt/68b683ba-790a-43f8-a238-4144d5935a4c/linSdk/extras/m2repository" />
+      <option name="name" value="/mnt/68b683ba-790a-43f8-a238-4144d5935a4c/linSdk/extras/m2repository" />
+      <option name="url" value="file:/mnt/68b683ba-790a-43f8-a238-4144d5935a4c/linSdk/extras/m2repository/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="/mnt/68b683ba-790a-43f8-a238-4144d5935a4c/linSdk/extras/google/m2repository" />
+      <option name="name" value="/mnt/68b683ba-790a-43f8-a238-4144d5935a4c/linSdk/extras/google/m2repository" />
+      <option name="url" value="file:/mnt/68b683ba-790a-43f8-a238-4144d5935a4c/linSdk/extras/google/m2repository/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="/mnt/68b683ba-790a-43f8-a238-4144d5935a4c/linSdk/extras/android/m2repository" />
+      <option name="name" value="/mnt/68b683ba-790a-43f8-a238-4144d5935a4c/linSdk/extras/android/m2repository" />
+      <option name="url" value="file:/mnt/68b683ba-790a-43f8-a238-4144d5935a4c/linSdk/extras/android/m2repository/" />
+    </remote-repository>
   </component>
 </project>

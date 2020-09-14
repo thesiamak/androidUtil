@@ -56,10 +56,16 @@
             android:onClick="openProgressModal"
             android:text="Open Progress Modal" />
 
-        
+
 
         <ir.drax.expandable.Expandable
             android:id="@+id/myExpandable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <ir.drax.expandable.Expandable
+            android:layout_marginTop="16dp"
+            android:id="@+id/myExpandableList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
