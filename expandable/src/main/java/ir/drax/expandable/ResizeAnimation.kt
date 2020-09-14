@@ -17,7 +17,6 @@ class ResizeAnimation(private val view:View, private val targetHeight:Int, priva
 
     override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
         if (interpolatedTime==1f)return // To stop any extra layout changes right after the animation ended-> To avoid threshold bugs
-        Log.e("Transform","sss$interpolatedTime")
         val newHeight = startHeight + (targetHeight - startHeight) * interpolatedTime
         //to support decent animation, change new heigt as Nico S. recommended in comments
         //int newHeight = (int) (startHeight+(targetHeight - startHeight) * interpolatedTime);

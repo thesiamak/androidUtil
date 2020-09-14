@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import ir.drax.modal.model.MoButton
@@ -11,7 +12,6 @@ import ir.drax.modal.model.ModalObj
 import ir.drax.modal.model.UnsatisfiedParametersException
 
 class Builder(private val activity: Activity):ModalObj() {
-
 
     fun setDirection(direction:Modal.Direction):Builder{
         this.direction=direction;return this
@@ -47,6 +47,10 @@ class Builder(private val activity: Activity):ModalObj() {
         return this
     }
     fun  setContentView(view:Int):Builder{
+        contentView = (activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(view,null,false)
+        return this
+    }
+    fun  setContentView(view: View):Builder{
         this.contentView=view
         return this
     }
@@ -79,13 +83,15 @@ class Builder(private val activity: Activity):ModalObj() {
                 Modal.Type.Alert -> R.layout.modal_alert_layout
                 Modal.Type.Progress -> R.layout.modal_progress_layout
                 Modal.Type.List -> R.layout.modal_list_layout
-                Modal.Type.Custom -> this.contentView!!
+                Modal.Type.Custom -> 0
                 else -> throw UnsatisfiedParametersException()
             }
 
 
-
-            val inflated = (activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(view,null,false)
+            val inflated = if (view != 0)
+                (activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(view,null,false)
+            else
+                contentView
 
 
             this.modal = when(this.type){
