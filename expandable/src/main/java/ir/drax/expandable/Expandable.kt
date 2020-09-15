@@ -1,24 +1,26 @@
 package ir.drax.expandable
 
+import android.animation.TimeInterpolator
 import android.content.Context
+import android.os.Build
+import android.transition.ChangeBounds
+import android.transition.TransitionManager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.Animation
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.res.ResourcesCompat
 import java.util.*
 
 class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?=null, defStyleAttr:Int=0)  : ConstraintLayout(context,attrs,defStyleAttr), Observer {
-    val stateObservable = StateObservable(false)
+    val stateObservable = StateObservable(true)
     val COLLAPSE_DURATION=250
     val EXPAND_DURATION=350
     val MARGIN_START=16
-    private var expandedHeight=0
-    private var collapsedHeight=0
     private var childs = listOf<View>()
 
     init {
@@ -31,59 +33,81 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
         stateObservable.addObserver(this)
         findViewById<View>(R.id.header).setOnClickListener {toggle()}
 
-        addOnLayoutChangeListener { _, _, top, _, bottom, _, _, _, _ ->
-            val newHeight = bottom - top
-            when {
-                collapsedHeight == 0 -> {
-                    expandedHeight = newHeight
-                    collapsedHeight = newHeight
-                    childs.forEach { it.visibility = View.VISIBLE }
-                }
-
-                newHeight > expandedHeight -> {
-                    if (stateObservable.state)
-                        enable(expandedHeight,newHeight)
-                    else
-                        disable()
-                    expandedHeight = newHeight
-                }
-            }
-        }
-
     }
 
     override fun update(observable: Observable?, obj: Any?) {
         if (obj as Boolean) enable() else disable()
     }
 
-    private fun enable(){enable(collapsedHeight,expandedHeight)}
-    private fun enable(from:Int,to:Int){
+    private fun enable(){
         findViewById<View>(R.id.header_icon).background=ResourcesCompat.getDrawable(resources,R.drawable.expandable_header_enabled,null)
 
-        val resizeAnimation=ResizeAnimation(this,to,from)
-        resizeAnimation.duration = EXPAND_DURATION.toLong()
-        resizeAnimation.startOffset = 200
-        resizeAnimation.setAnimationListener(object:Animation.AnimationListener{
-            override fun onAnimationStart(p0: Animation?) {}
-
-            override fun onAnimationEnd(p0: Animation?) {
-                layoutParams.height = LayoutParams.WRAP_CONTENT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val transition=ChangeBounds()
+            transition.apply {
+                interpolator= TimeInterpolator {time->
+                    childs.onEach {
+                        if (time==0f) it.visibility= VISIBLE
+                        else it.alpha=time
+                    }
+                    time
+                }
+                duration= EXPAND_DURATION.toLong()
             }
+            TransitionManager.beginDelayedTransition(this,transition)
+        }else{
+            childs.onEach {
+                it.visibility= VISIBLE
+            }
+        }
+        val before = ConstraintSet();
+        before.clone(this);
 
-            override fun onAnimationRepeat(p0: Animation?) {}
+        for ((index, child) in childs.withIndex()) {
+            before.connect(child.id, ConstraintSet.TOP, if(index == 0) R.id.header else childs[index-1].id, ConstraintSet.BOTTOM);
+            before.setVisibility(child.id,ConstraintSet.VISIBLE);
+            before.setMargin(child.id, ConstraintSet.TOP, MARGIN_START);
+        }
 
-        })
-        startAnimation(resizeAnimation)
+        before.applyTo(this);
+
+
     }
 
     private fun disable(){
         findViewById<View>(R.id.header_icon).background=ResourcesCompat.getDrawable(resources,R.drawable.expandable_header_disabled,null)
 
-        if (collapsedHeight > 0){
-            val resizeAnimation=ResizeAnimation(this,collapsedHeight,expandedHeight)
-            resizeAnimation.duration=COLLAPSE_DURATION.toLong()
-            startAnimation(resizeAnimation)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val transition=ChangeBounds()
+            transition.apply {
+                interpolator= TimeInterpolator {time->
+                    childs.onEach {
+                        if (time==1f) it.visibility= GONE
+                        else it.alpha=1-time
+                    }
+                    time
+                }
+                duration=COLLAPSE_DURATION.toLong()
+            }
+
+
+            TransitionManager.beginDelayedTransition(this,transition)
+        }else{
+            childs.onEach {
+                it.visibility= GONE
+            }
         }
+        val before = ConstraintSet();
+        before.clone(this);
+
+
+        childs.forEach {child->
+            before.connect(child.id, ConstraintSet.TOP, R.id.header, ConstraintSet.TOP);
+            before.setMargin(child.id, ConstraintSet.TOP, 0);
+        }
+
+        before.applyTo(this);
+
     }
 
     fun addChild(vararg views:View ):Expandable{
@@ -98,10 +122,9 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
             params.marginStart = MARGIN_START
             params.startToStart = Constraints.LayoutParams.PARENT_ID
             params.endToEnd = Constraints.LayoutParams.PARENT_ID
-            params.endToEnd = Constraints.LayoutParams.PARENT_ID
             params.topToBottom = getChildAt(childCount-1).id
 
-            it.visibility = if(collapsedHeight==0) View.GONE else View.VISIBLE
+            it.visibility = if (stateObservable.state)View.VISIBLE else View.GONE
             if (childCount > 1) params.topMargin = MARGIN_START
             if (it.id == -1) it.id= System.currentTimeMillis().plus(childCount).toInt()
 
@@ -124,6 +147,4 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
     fun collapse() { stateObservable.state = false }
     fun expand() { stateObservable.state = true }
     fun toggle() { stateObservable.state = stateObservable.state.not() }
-
-
 }

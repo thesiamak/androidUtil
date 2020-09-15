@@ -14,8 +14,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ImageViewCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +21,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import ir.drax.expandable.Expandable;
+import ir.drax.expandable.WaterfallExpandable;
 import ir.drax.modal.Listener;
 import ir.drax.modal.Modal;
 import ir.drax.modal.ModalBuilder;
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initExpandable(){
-        Expandable expandable= findViewById(R.id.myExpandable);
+        WaterfallExpandable expandable= findViewById(R.id.waterfallExpandableList);
 
         TextView textView=new TextView(this);
         textView.setText("Heyyy, I'm a Textview with a message.\nClick me to add more views...");
@@ -190,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView imageView=new ImageView(this);
         imageView.setImageResource(R.drawable.ic_close_black_12dp);
-        ImageViewCompat.setImageTintList(imageView,ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+        ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
 
         imageView.setOnClickListener(v->expandable.collapse());
 
@@ -220,12 +219,10 @@ public class MainActivity extends AppCompatActivity {
         expandable.setTitle("My recyclerView expandable list");
         expandable.setIcon(R.drawable.ic_build_black_24dp);
         expandable.addChild(textView,recyclerView);
-        expandable.getStateObservable().addObserver(new Observer() {
-            @Override
-            public void update(Observable observable, Object o) {
-                if ((boolean)o)
-                    Toast.makeText(MainActivity.this, "Event observer catched expand status ", Toast.LENGTH_LONG).show();
-            }
+        expandable.getStateObservable().addObserver((observable, o) -> {
+            if ((boolean)o)
+                Toast.makeText(MainActivity.this, "Event observer catched expand status ", Toast.LENGTH_LONG).show();
         });
+
     }
 }
