@@ -78,16 +78,15 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
 
     fun addChild(vararg views:View ):Expandable{
         childs = childs + views
-        drawChilds()
+        drawChilds(views.toList())
         return this
     }
 
-    private fun drawChilds(){
-        childs.forEach {
+    private fun drawChilds(views:List<View>){
+        views.forEach {
             val params = Constraints.LayoutParams(0,ConstraintLayout.LayoutParams.WRAP_CONTENT)
             params.marginStart = MARGIN_START
             params.startToStart = Constraints.LayoutParams.PARENT_ID
-            params.endToEnd = Constraints.LayoutParams.PARENT_ID
             params.endToEnd = Constraints.LayoutParams.PARENT_ID
             params.topToBottom = getChildAt(childCount-1).id
 
@@ -97,6 +96,7 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
 
             addView(it,params)
         }
+
     }
 
     var title:String=""

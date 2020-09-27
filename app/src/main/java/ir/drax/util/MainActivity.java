@@ -173,6 +173,12 @@ public class MainActivity extends AppCompatActivity {
         TextView textView=new TextView(this);
         textView.setText("Heyyy, I'm a Textview with a message.\nA second line is provided as well.");
         textView.setTextColor(Color.WHITE);
+        textView.setOnClickListener((v)->{
+            TextView textView2=new TextView(this);
+            textView2.setText("Heyyy, I'm a NEW Textview with a message.\nA second line is provided as well.");
+            textView2.setTextColor(Color.WHITE);
+            expandable.addChild(textView2);
+        });
 
         ImageView imageView=new ImageView(this);
         imageView.setImageResource(R.drawable.ic_close_black_12dp);
