@@ -1,6 +1,5 @@
 package ir.drax.modal
 
-import android.app.Activity
 import android.content.Context
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -11,7 +10,7 @@ import ir.drax.modal.model.MoButton
 import ir.drax.modal.model.ModalObj
 import ir.drax.modal.model.UnsatisfiedParametersException
 
-class Builder(private val activity: Activity):ModalObj() {
+class Builder(override var root: ViewGroup):ModalObj(root) {
 
     fun setDirection(direction:Modal.Direction):Builder{
         this.direction=direction;return this
@@ -47,7 +46,7 @@ class Builder(private val activity: Activity):ModalObj() {
         return this
     }
     fun  setContentView(view:Int):Builder{
-        contentView = (activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(view,null,false)
+        contentView = View.inflate(root.context,view,null)
         return this
     }
     fun  setContentView(view: View):Builder{
@@ -77,7 +76,6 @@ class Builder(private val activity: Activity):ModalObj() {
 
     fun build():ModalBuilder?{
         try {
-            this.root=activity.findViewById(android.R.id.content)
 
             val view = when(this.type){
                 Modal.Type.Alert -> R.layout.modal_alert_layout
@@ -89,14 +87,14 @@ class Builder(private val activity: Activity):ModalObj() {
 
 
             val inflated = if (view != 0)
-                (activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(view,null,false)
+                View.inflate(root.context,view,null)
             else
                 contentView
 
 
             this.modal = when(this.type){
                 Modal.Type.Custom -> {
-                    val modal = RelativeLayout(ContextThemeWrapper(activity,R.style.modal_root))
+                    val modal = RelativeLayout(ContextThemeWrapper(root.context,R.style.modal_root))
                     modal.addView(inflated, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT))
                     modal
                 }

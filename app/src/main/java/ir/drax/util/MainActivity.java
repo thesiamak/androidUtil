@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openModal2(View view) {
-        Modal.builder(this)
+        Modal.builder(view)
                 .setDirection(Modal.Direction.TopToBottom)
                 .setType(Modal.Type.Custom)
                 .setContentView(R.layout.sample_layout)
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     private ModalBuilder progressBuilder;
     public void openProgressModal(View view) {
          if (progressBuilder==null) {
-             progressBuilder = Modal.builder(this)
+             progressBuilder = Modal.builder(view)
                      .setListener(new Listener() {
                          @Override
                          public void onDismiss() {
