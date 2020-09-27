@@ -2,12 +2,14 @@ package ir.drax.expandable
 
 import java.util.*
 
-class StateObservable(state:Boolean) : Observable(){
-
+class StateObservable(default:Boolean) : Observable(){
     var state:Boolean=false
         set(newState) {
+            field=newState
             setChanged()
             notifyObservers(newState)
-            field=newState
         }
+    init {
+        state=default
+    }
 }

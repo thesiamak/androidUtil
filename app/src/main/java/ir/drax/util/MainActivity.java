@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +17,11 @@ import androidx.core.widget.ImageViewCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import ir.drax.expandable.Expandable;
+import ir.drax.expandable.WaterfallExpandable;
 import ir.drax.modal.Listener;
 import ir.drax.modal.Modal;
 import ir.drax.modal.ModalBuilder;
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //openModal(this);
         initExpandable();
+        initListExpandable();
     }
 
     public void openModal(View view) {
@@ -168,26 +174,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initExpandable(){
-        Expandable expandable= findViewById(R.id.myExpandable);
+        WaterfallExpandable expandable= findViewById(R.id.waterfallExpandableList);
 
         TextView textView=new TextView(this);
-        textView.setText("Heyyy, I'm a Textview with a message.\nA second line is provided as well.");
+        textView.setText("Heyyy, I'm a Textview with a message.\nClick me to add more views...");
         textView.setTextColor(Color.WHITE);
         textView.setOnClickListener((v)->{
             TextView textView2=new TextView(this);
-            textView2.setText("Heyyy, I'm a NEW Textview with a message.\nA second line is provided as well.");
+            textView2.setText("I'm a NEW Textview with a message.\nA second line is provided as well.");
             textView2.setTextColor(Color.WHITE);
             expandable.addChild(textView2);
         });
 
+
         ImageView imageView=new ImageView(this);
         imageView.setImageResource(R.drawable.ic_close_black_12dp);
-        ImageViewCompat.setImageTintList(imageView,ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+        ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
 
         imageView.setOnClickListener(v->expandable.collapse());
 
         expandable.setTitle("My expandable list");
         expandable.setIcon(R.drawable.ic_build_black_24dp);
         expandable.addChild(textView,imageView);
+    }
+
+
+    private void initListExpandable(){
+        Expandable expandable= findViewById(R.id.myExpandableList);
+
+        ListView recyclerView=new ListView(this);
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,new ArrayList<>());
+        recyclerView.setAdapter(itemsAdapter);
+        recyclerView.setBackgroundColor(Color.WHITE);
+
+        TextView textView=new TextView(this);
+        textView.setText("Click me to add more list items ...");
+        textView.setTextColor(Color.WHITE);
+        textView.setOnClickListener((v)->{
+            itemsAdapter.add("New item!");
+        });
+
+
+        expandable.setTitle("My recyclerView expandable list");
+        expandable.setIcon(R.drawable.ic_build_black_24dp);
+        expandable.addChild(textView,recyclerView);
+        expandable.getStateObservable().addObserver((observable, o) -> {
+            if ((boolean)o)
+                Toast.makeText(MainActivity.this, "Event observer catched expand status ", Toast.LENGTH_LONG).show();
+        });
+
     }
 }

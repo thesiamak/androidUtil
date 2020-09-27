@@ -10,7 +10,7 @@ open class ModalObj @JvmOverloads constructor(
         var root:ViewGroup?=null,
         var listener:Listener?=null,
         var modal:View?=null,
-        var contentView:Int?=0
+        var contentView:View?=null
 
 ): LiveData<ModalObj>() {
     companion object{

@@ -1,24 +1,26 @@
 package ir.drax.expandable
 
+import android.animation.TimeInterpolator
 import android.content.Context
+import android.os.Build
+import android.transition.ChangeBounds
+import android.transition.TransitionManager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.res.ResourcesCompat
-import org.w3c.dom.Text
 import java.util.*
 
 class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?=null, defStyleAttr:Int=0)  : ConstraintLayout(context,attrs,defStyleAttr), Observer {
-    private val observableState = StateObservable(false)
-    private val COLLAPSE_DURATION=250
-    private val EXPAND_DURATION=350
-    private val MARGIN_START=16
-    private var expandedHeight=0
-    private var collapsedHeight=0
+    val stateObservable = StateObservable(true)
+    val COLLAPSE_DURATION=250
+    val EXPAND_DURATION=350
+    val MARGIN_START=16
     private var childs = listOf<View>()
 
     init {
@@ -28,28 +30,8 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
     private fun setup(){
         LayoutInflater.from(context).inflate(R.layout.expandable_layout,this,true)
 
-        observableState.addObserver(this)
+        stateObservable.addObserver(this)
         findViewById<View>(R.id.header).setOnClickListener {toggle()}
-
-        addOnLayoutChangeListener (object:OnLayoutChangeListener {
-            override fun onLayoutChange(view: View, i: Int, top: Int, i2: Int, bottom: Int, i4: Int, i5: Int, i6: Int, oldBottom: Int) {
-
-                val newHeight = bottom - top
-                when{
-                    collapsedHeight == 0 -> {
-                        collapsedHeight = newHeight
-                        expandedHeight = newHeight
-                        childs.forEach { it.visibility= View.VISIBLE }
-                    }
-
-                    newHeight > expandedHeight -> {
-                        expandedHeight = newHeight
-                        removeOnLayoutChangeListener(this)
-                        disable()
-                    }
-                }
-            }
-        })
 
     }
 
@@ -60,20 +42,72 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
     private fun enable(){
         findViewById<View>(R.id.header_icon).background=ResourcesCompat.getDrawable(resources,R.drawable.expandable_header_enabled,null)
 
-        val resizeAnimation=ResizeAnimation(this,expandedHeight,collapsedHeight)
-        resizeAnimation.duration = EXPAND_DURATION.toLong()
-        resizeAnimation.startOffset = 200
-        startAnimation(resizeAnimation)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val transition=ChangeBounds()
+            transition.apply {
+                interpolator= TimeInterpolator {time->
+                    childs.onEach {
+                        if (time==0f) it.visibility= VISIBLE
+                        else it.alpha=time
+                    }
+                    time
+                }
+                duration= EXPAND_DURATION.toLong()
+            }
+            TransitionManager.beginDelayedTransition(this,transition)
+        }else{
+            childs.onEach {
+                it.visibility= VISIBLE
+            }
+        }
+        val before = ConstraintSet();
+        before.clone(this);
+
+        for ((index, child) in childs.withIndex()) {
+            before.connect(child.id, ConstraintSet.TOP, if(index == 0) R.id.header else childs[index-1].id, ConstraintSet.BOTTOM);
+            before.setVisibility(child.id,ConstraintSet.VISIBLE);
+            before.setMargin(child.id, ConstraintSet.TOP, MARGIN_START);
+        }
+
+        before.applyTo(this);
+
+
     }
 
     private fun disable(){
         findViewById<View>(R.id.header_icon).background=ResourcesCompat.getDrawable(resources,R.drawable.expandable_header_disabled,null)
 
-        if (collapsedHeight > 0){
-            val resizeAnimation=ResizeAnimation(this,collapsedHeight,expandedHeight)
-            resizeAnimation.duration=COLLAPSE_DURATION.toLong()
-            startAnimation(resizeAnimation)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val transition=ChangeBounds()
+            transition.apply {
+                interpolator= TimeInterpolator {time->
+                    childs.onEach {
+                        if (time==1f) it.visibility= GONE
+                        else it.alpha=1-time
+                    }
+                    time
+                }
+                duration=COLLAPSE_DURATION.toLong()
+            }
+
+
+            TransitionManager.beginDelayedTransition(this,transition)
+        }else{
+            childs.onEach {
+                it.visibility= GONE
+            }
         }
+        val before = ConstraintSet();
+        before.clone(this);
+
+
+        childs.forEach {child->
+            before.connect(child.id, ConstraintSet.TOP, R.id.header, ConstraintSet.TOP);
+            before.setMargin(child.id, ConstraintSet.TOP, 0);
+        }
+
+        before.applyTo(this);
+
     }
 
     fun addChild(vararg views:View ):Expandable{
@@ -90,7 +124,7 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
             params.endToEnd = Constraints.LayoutParams.PARENT_ID
             params.topToBottom = getChildAt(childCount-1).id
 
-            it.visibility = View.GONE
+            it.visibility = if (stateObservable.state)View.VISIBLE else View.GONE
             if (childCount > 1) params.topMargin = MARGIN_START
             if (it.id == -1) it.id= System.currentTimeMillis().plus(childCount).toInt()
 
@@ -111,9 +145,7 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
         }
 
 
-    fun collapse() { observableState.state = false }
-    fun expand() { observableState.state = true }
-    fun toggle() { observableState.state = observableState.state.not() }
-
-
+    fun collapse() { stateObservable.state = false }
+    fun expand() { stateObservable.state = true }
+    fun toggle() { stateObservable.state = stateObservable.state.not() }
 }
