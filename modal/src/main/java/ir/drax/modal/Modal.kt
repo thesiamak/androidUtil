@@ -3,6 +3,7 @@ package ir.drax.modal
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import ir.drax.modal.model.ModalObj
 
 class Modal {
@@ -12,12 +13,22 @@ class Modal {
     companion object{
         @JvmStatic
         fun builder(activity: Activity):Builder{
-            return Builder(activity)
+            return Builder(activity.findViewById(android.R.id.content))
+        }
+
+        @JvmStatic
+        fun builder(anyVisibleView: View):Builder{
+            return Builder(anyVisibleView.rootView.findViewById(android.R.id.content))
         }
 
         @JvmStatic
         fun hide(activity: Activity):Boolean{
             return hide(activity.findViewById<ViewGroup>(android.R.id.content))
+        }
+
+        @JvmStatic
+        fun hide(anyVisibleView: View):Boolean{
+            return hide(anyVisibleView.rootView.findViewById<ViewGroup>(android.R.id.content))
         }
 
         private fun hide(root:ViewGroup):Boolean{

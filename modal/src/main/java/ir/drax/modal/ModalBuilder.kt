@@ -16,7 +16,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import ir.drax.modal.model.ModalObj
 
-class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Context?=state.root!!.context):RelativeLayout(context),Observer<ModalObj> {
+class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Context?=state.root.context):RelativeLayout(context),Observer<ModalObj> {
 
     private var bg:ViewGroup
 
@@ -26,7 +26,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         addView(state.modal, LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT))
         tag=state.direction
         visibility= View.INVISIBLE
-        bg =FrameLayout(state.root!!.context)
+        bg =FrameLayout(state.root.context)
         bg.tag=ModalObj.VIEW_TAG_ID
         setViewDirection()
         setHeader(bg)
@@ -34,6 +34,9 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         setCallback()
         setList()
         bg.background=ResourcesCompat.getDrawable(resources,R.drawable.modal_root_transition,null)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            bg.elevation=100f
+        }
         bg.setOnClickListener{closeModal(bg)}
         bg.addView(this)
 
@@ -50,8 +53,8 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
     }
     private fun buildModal(){
 
-        root?.addView(bg, LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT))
-        root?.viewTreeObserver?.addOnGlobalLayoutListener (object : ViewTreeObserver.OnGlobalLayoutListener {
+        root.addView(bg, LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT))
+        root.viewTreeObserver?.addOnGlobalLayoutListener (object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
 
                 root.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -146,7 +149,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                         override fun onAnimationEnd(animation: Animator?) {
                             (header.background as TransitionDrawable).reverseTransition(250)
                             state.removeObserver(this@ModalBuilder)
-                            root!!.removeView(header)
+                            root.removeView(header)
                             blurEffect(false)
                             state.listener.let {
                                 it?.onDismiss()

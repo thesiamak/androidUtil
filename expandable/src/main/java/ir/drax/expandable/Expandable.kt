@@ -130,6 +130,7 @@ class Expandable @JvmOverloads constructor(context: Context, attrs:AttributeSet?
 
             addView(it,params)
         }
+
     }
 
     var title:String=""

@@ -7,7 +7,7 @@ import ir.drax.modal.Listener
 import ir.drax.modal.Modal
 
 open class ModalObj @JvmOverloads constructor(
-        var root:ViewGroup?=null,
+        open var root:ViewGroup,
         var listener:Listener?=null,
         var modal:View?=null,
         var contentView:View?=null
