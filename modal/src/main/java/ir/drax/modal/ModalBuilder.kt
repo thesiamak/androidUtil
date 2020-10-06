@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.TransitionDrawable
 import android.os.Build
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -67,12 +68,10 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                 layoutParams=fLayoutParams
 
                 if (state.type==Modal.Type.List)
-                    findViewById<ScrollView>(R.id.listScrollView).also {
-                        print(it.layoutParams.height)
-                        print(it.measuredHeight)
-                        if (it.measuredHeight>(bg.height * .7)) {
-                            it.layoutParams.height = (bg.height * .7).toInt()
-
+                    findViewById<ScrollView>(R.id.listScrollView).apply {
+                        if (measuredHeight>(bg.height * .7)) {
+                            layoutParams.height = (bg.height * .7).toInt()
+                            requestLayout()
                         }
                     }
 
@@ -203,8 +202,8 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                 listHolder.addView(textView,itemLP)
 
                 val divider=View(context)
-                divider.setBackgroundColor(resources.getColor(R.color.black_faded))
-                listHolder.addView(divider, LayoutParams(LayoutParams.MATCH_PARENT,5))
+                divider.setBackgroundColor(resources.getColor(R.color.grey))
+                listHolder.addView(divider, LayoutParams(LayoutParams.MATCH_PARENT,2))
             }
         }
     }

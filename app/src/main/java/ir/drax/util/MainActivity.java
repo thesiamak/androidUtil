@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
                                          try {
                                              Thread.sleep(100);
                                              runOnUiThread(()->{
-                                                 Log.e("ssss","ss");
                                                  progressBuilder.getState().setProgress(progressBuilder.getState().getProgress()+1);
                                              });
                                          } catch (InterruptedException e) {
