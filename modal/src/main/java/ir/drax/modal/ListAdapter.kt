@@ -1,5 +1,7 @@
 package ir.drax.modal
 
+import android.graphics.Typeface
+import android.provider.FontsContract
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -7,7 +9,7 @@ import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import ir.drax.modal.model.MoButton
 
-class ListAdapter(private var medicines: List<MoButton>, val callback:(Int)->Unit) :
+class ListAdapter(private var typeFace:Typeface ,private var medicines: List<MoButton>, val callback:(Int)->Unit) :
         RecyclerView.Adapter<ListAdapter.MedicineHolder>()  {
 
     override fun getItemCount() = medicines.size
@@ -19,6 +21,7 @@ class ListAdapter(private var medicines: List<MoButton>, val callback:(Int)->Uni
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineHolder {
         val textView=TextView(parent.context).apply {
             setTextColor(parent.context.resources.getColor(R.color.black_faded))
+            typeface=typeFace
             compoundDrawablePadding=8
             setPadding(32,16,32,16)
             layoutParams= ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)

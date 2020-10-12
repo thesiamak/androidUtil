@@ -189,7 +189,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
             findViewById<RecyclerView>(R.id.listScrollView).apply {
                 if (adapter==null){
                     layoutManager=LinearLayoutManager(context)
-                    adapter=ListAdapter(state.list){position->
+                    adapter=ListAdapter(doneBtnView.typeface,state.list){position->
                         state.lockVisibility=false
                         closeModal(bg)
                     }
