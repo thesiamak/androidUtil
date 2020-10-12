@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <ScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listScrollView"
@@ -52,8 +52,15 @@
             android:id="@+id/listItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    </ScrollView>
+    </ScrollView>-->
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listScrollView"
+        app:layout_constraintTop_toBottomOf="@id/close"
+        app:layout_constraintBottom_toTopOf="@id/text"
+        android:layout_margin="16dp" />
 
     <TextView
         android:autoLink="all"

@@ -14,6 +14,8 @@ import android.view.animation.CycleInterpolator
 import android.widget.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ir.drax.modal.model.ModalObj
 
 class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Context?=state.root.context):RelativeLayout(context),Observer<ModalObj> {
@@ -71,7 +73,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                 layoutParams=fLayoutParams
 
                 if (state.type==Modal.Type.List)
-                    findViewById<ScrollView>(R.id.listScrollView).apply {
+                    findViewById<RecyclerView>(R.id.listScrollView).apply {
                         if (measuredHeight>(bg.height * .7)) {
                             layoutParams.height = (bg.height * .7).toInt()
                             requestLayout()
@@ -169,11 +171,12 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         if (state.type!=Modal.Type.Custom){
             state.callback?.let { cb ->
                 findViewById<TextView>(R.id.ok).apply {
-                setCompoundDrawablesWithIntrinsicBounds(cb.icon,0,0,0)
-                setOnClickListener { cb.clickListener?.let {
-                    if (it.onClick(this))
-                        closeModal(bg)
-                }}
+                    setCompoundDrawablesWithIntrinsicBounds(cb.icon,0,0,0)
+                    setOnClickListener { cb.clickListener?.let {
+                        if (it.onClick(this))
+                            closeModal(bg)
+                    }
+                    }
                 }
             }
 
@@ -183,30 +186,15 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
     private fun setList(){
         if (state.type==Modal.Type.List){
             val doneBtnView=findViewById<TextView>(R.id.ok)
-            val listHolder=findViewById<ViewGroup>(R.id.listItems)
-            val itemLP=LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT)
-            state.list.forEach {each->
-                val textView=TextView(context)
-                textView.text=each.text
-                textView.setTextColor(resources.getColor(R.color.black_faded))
-                textView.typeface=doneBtnView.typeface
-                textView.setCompoundDrawablesWithIntrinsicBounds(0,0,each.icon,0)
-                textView.compoundDrawablePadding=8
-                textView.setPadding(32,16,32,16)
-                textView.setOnClickListener {view->
-                    each.clickListener?.let {
-                        if(it.onClick(view)){
-                            state.lockVisibility=false
-                            closeModal(bg)
-                        }
+            findViewById<RecyclerView>(R.id.listScrollView).apply {
+                if (adapter==null){
+                    layoutManager=LinearLayoutManager(context)
+                    adapter=ListAdapter(state.list){position->
+                        state.lockVisibility=false
+                        closeModal(bg)
                     }
-                }
-
-                listHolder.addView(textView,itemLP)
-
-                val divider=View(context)
-                divider.setBackgroundColor(resources.getColor(R.color.grey))
-                listHolder.addView(divider, LayoutParams(LayoutParams.MATCH_PARENT,2))
+                }else
+                    (adapter as ListAdapter).setMedicines(state.list)
             }
         }
     }
