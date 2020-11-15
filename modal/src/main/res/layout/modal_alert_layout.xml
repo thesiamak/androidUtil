@@ -72,7 +72,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:background="@drawable/bottom_button"
-        android:text="@string/ok"
+        android:text="@string/modal_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>
