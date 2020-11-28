@@ -1,8 +1,6 @@
 package ir.drax.modal
 
 import android.graphics.Typeface
-import android.provider.FontsContract
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
@@ -20,7 +18,7 @@ class ListAdapter(private var typeFace:Typeface ,private var medicines: List<MoB
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineHolder {
         val textView=TextView(parent.context).apply {
-            setTextColor(parent.context.resources.getColor(R.color.black_faded))
+            setTextColor(parent.context.resources.getColor(R.color.modal_ok_button))
             typeface=typeFace
             compoundDrawablePadding=8
             setPadding(32,16,32,16)

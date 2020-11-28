@@ -90,7 +90,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                                 super.onAnimationStart(animation)
                             }
                             override fun onAnimationEnd(animation: Animator?) {
-                                state.listener?.let { it.onShow() }
+                                state.listener?.onShow()
                                 if (state.type != Modal.Type.Custom) {
                                     findViewById<View>(R.id.ok)
                                             .animate()
@@ -171,6 +171,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         if (state.type!=Modal.Type.Custom){
             state.callback?.let { cb ->
                 findViewById<TextView>(R.id.ok).apply {
+                    text = cb.text
                     setCompoundDrawablesWithIntrinsicBounds(cb.icon,0,0,0)
                     setOnClickListener { cb.clickListener?.let {
                         if (it.onClick(this))
