@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.function.Function;
 
 import ir.drax.expandable.Expandable;
 import ir.drax.expandable.WaterfallExpandable;
 import ir.drax.modal.Listener;
 import ir.drax.modal.Modal;
 import ir.drax.modal.ModalBuilder;
+import ir.drax.modal.model.JvmMoButton;
 import ir.drax.modal.model.MoButton;
 import ir.drax.modal.model.OnClickListener;
 
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle("رند کردن قیمت در صفحه waitingpassenger در اپهای مسافر و راننده اعمال نمی شود.")
                 .setMessage(getString(R.string.sample_text))
                 .setIcon(R.drawable.ic_gesture_black_24dp)
-                .setCallback(new MoButton("Got it !!!!", R.drawable.ic_mood_black_24dp, new OnClickListener() {
+                .setCallback(new JvmMoButton("Got it !!!!", R.drawable.ic_mood_black_24dp, new OnClickListener() {
                     @Override
                     public boolean onClick(View v) {
                         Toast.makeText(MainActivity.this, "closed!", Toast.LENGTH_SHORT).show();
@@ -68,43 +70,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openListModal(View view) {
-        List<MoButton> buttonList =new ArrayList<>();
-        buttonList.add(new MoButton(Html.fromHtml("Repair service:  <i>$2506 Dollars</i>"),R.drawable.ic_build_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new MoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_brush_black_24dp,(v)->{
+        List<JvmMoButton> buttonList =new ArrayList<>();
+        buttonList.add(new JvmMoButton(Html.fromHtml("Repair service:  <i>$2506 Dollars</i>"),R.drawable.ic_build_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_brush_black_24dp,(v)->{
             Toast.makeText(this, "sssss", Toast.LENGTH_SHORT).show();
             return true;
         }));
 
-        buttonList.add(new MoButton(Html.fromHtml("Discount :  <u>$500 Dollars</u>"),R.drawable.ic_mood_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Discount :  <u>$500 Dollars</u>"),R.drawable.ic_mood_black_24dp,null));
 
         Modal.builder(this)
                 .setType(Modal.Type.List)
                 .setTitle("Sample list modal")
                 .setIcon(R.drawable.ic_gesture_black_24dp)
                 .setList(buttonList)
-                .setMessage(new MoButton("2706 Total",R.drawable.ic_attach_money_black_24dp,null))
-                .setCallback(new MoButton("Share", R.drawable.ic_share_black_24dp, new OnClickListener() {
-                    @Override
-                    public boolean onClick(View v) {
-                        Toast.makeText(MainActivity.this, "Throw an intent here ...", Toast.LENGTH_SHORT).show();
+                .setMessage(new JvmMoButton("2706 Total",R.drawable.ic_attach_money_black_24dp,null))
+                .setCallback(new JvmMoButton("Share", R.drawable.ic_share_black_24dp, v -> {
+                    Toast.makeText(MainActivity.this, "Throw an intent here ...", Toast.LENGTH_SHORT).show();
 
-                        return true;//Hide modal..
-                    }
+                    return true;//Hide modal..
                 }))
                 .build().show();
     }
@@ -133,10 +132,6 @@ public class MainActivity extends AppCompatActivity {
          if (progressBuilder==null) {
              progressBuilder = Modal.builder(view)
                      .setListener(new Listener() {
-                         @Override
-                         public void onDismiss() {
-
-                         }
 
                          @Override
                          public void onShow() {
@@ -222,6 +217,5 @@ public class MainActivity extends AppCompatActivity {
             if ((boolean)o)
                 Toast.makeText(MainActivity.this, "Event observer catched expand status ", Toast.LENGTH_LONG).show();
         });
-
     }
 }

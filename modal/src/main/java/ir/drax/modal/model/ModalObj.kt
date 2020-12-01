@@ -34,7 +34,7 @@ open class ModalObj @JvmOverloads constructor(
             postValue(changedIndex(0))
         }
 
-    var message = MoButton("",0,null)
+    var message = MoButton("")
         set(value) {
             field=value
             postValue(changedIndex(1))

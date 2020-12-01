@@ -60,7 +60,7 @@ class Builder(override var root: ViewGroup):ModalObj(root) {
     }
 
     fun  setMessage(message:CharSequence):Builder{
-        this.message= MoButton(message,0,null)
+        this.message= MoButton(message,0)
         return this
     }
 
@@ -99,6 +99,10 @@ class Builder(override var root: ViewGroup):ModalObj(root) {
                     modal
                 }
                 else -> inflated
+            }
+
+            MoButton("",0) {
+                true
             }
 
             return ModalBuilder(this)

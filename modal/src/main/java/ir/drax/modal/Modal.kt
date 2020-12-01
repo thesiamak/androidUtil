@@ -56,7 +56,7 @@ class Modal {
     }
 }
 
-interface Listener{
-    fun onDismiss()
-    fun onShow()
+abstract class Listener{
+    open fun onDismiss(){}
+    open fun onShow(){}
 }

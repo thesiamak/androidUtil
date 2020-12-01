@@ -120,15 +120,14 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
     }
     private fun setHeader(header:ViewGroup){
         if (state.type != Modal.Type.Custom){
-            if (state.message.text.isEmpty().not()){
+            if (state.message.displayText.isEmpty().not()){
                 val summary=findViewById<TextView>(R.id.text)
-                summary.text=state.message.text
-                summary.setCompoundDrawablesWithIntrinsicBounds(state.message.icon,0,0,0)
+                summary.text=state.message.displayText
+                summary.setCompoundDrawablesWithIntrinsicBounds(state.message.iconResourceId,0,0,0)
                 summary.setOnClickListener {
-                    state.message.clickListener?.let {
-                        if (it.onClick(summary))
-                            closeModal(header)
-                    }}
+                    if(state.message.clickListener(summary))
+                        closeModal(header)
+                }
             }
 
 
@@ -171,12 +170,12 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         if (state.type!=Modal.Type.Custom){
             state.callback?.let { cb ->
                 findViewById<TextView>(R.id.ok).apply {
-                    text = cb.text
-                    setCompoundDrawablesWithIntrinsicBounds(cb.icon,0,0,0)
-                    setOnClickListener { cb.clickListener?.let {
-                        if (it.onClick(this))
+                    text = cb.displayText
+                    setCompoundDrawablesWithIntrinsicBounds(cb.iconResourceId,0,0,0)
+                    setOnClickListener {
+                        if (cb.clickListener(this))
                             closeModal(bg)
-                    }
+
                     }
                 }
             }

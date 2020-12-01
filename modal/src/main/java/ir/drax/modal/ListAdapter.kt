@@ -31,15 +31,14 @@ class ListAdapter(private var typeFace:Typeface ,private var medicines: List<MoB
 
         private var view: TextView = v
 
-        fun bindMedicine(medicine: MoButton, callback: (Int) -> Unit) = with(view){
-            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this,0,0,medicine.icon,0)
-            text = medicine.text
+        fun bindMedicine(medicine: MoButton, callback: (Int) -> Unit) = with(view) {
+            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, 0, 0, medicine.iconResourceId, 0)
+            text = medicine.displayText
             setOnClickListener {
-                medicine.clickListener?.let {
-                    if(it.onClick(view)){
-                        callback(adapterPosition) }
-                    }
-                }
+                if (medicine.clickListener(this))
+                    callback(adapterPosition)
+
+            }
         }
     }
 
