@@ -29,5 +29,6 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation project(':modal')
     implementation project(':expandable')
-    implementation project(path: ':permissioner')
+    implementation project(':permissioner')
+    annotationProcessor project(':processor')
 }

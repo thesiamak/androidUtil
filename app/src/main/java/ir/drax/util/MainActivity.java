@@ -4,7 +4,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -17,18 +16,16 @@ import androidx.core.widget.ImageViewCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.function.Function;
 
+import ir.drax.annotations.WithPermission;
 import ir.drax.expandable.Expandable;
 import ir.drax.expandable.WaterfallExpandable;
 import ir.drax.modal.Listener;
 import ir.drax.modal.Modal;
 import ir.drax.modal.ModalBuilder;
 import ir.drax.modal.model.JvmMoButton;
-import ir.drax.modal.model.MoButton;
 import ir.drax.modal.model.OnClickListener;
+import ir.drax.permissioner.binder.Binding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         //openModal(this);
         initExpandable();
         initListExpandable();
+
+        Binding.bind(this);
     }
 
     public void openModal(View view) {
@@ -217,5 +216,10 @@ public class MainActivity extends AppCompatActivity {
             if ((boolean)o)
                 Toast.makeText(MainActivity.this, "Event observer catched expand status ", Toast.LENGTH_LONG).show();
         });
+    }
+
+    @WithPermission
+    void testFunc(){
+        Toast.makeText(this, "testttt", Toast.LENGTH_SHORT).show();
     }
 }
