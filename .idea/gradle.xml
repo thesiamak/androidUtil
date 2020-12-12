@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/expandable" />
             <option value="$PROJECT_DIR$/modal" />
+            <option value="$PROJECT_DIR$/permissioner" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

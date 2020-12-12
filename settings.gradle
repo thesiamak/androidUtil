@@ -1,2 +1,3 @@
+include ':permissioner'
 include ':app:'
 include ':expandable', ':modal'

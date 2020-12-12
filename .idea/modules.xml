@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="androidUtil_2/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/expandable/expandable.iml" filepath="$PROJECT_DIR$/.idea/modules/expandable/expandable.iml" group="androidUtil_2/expandable" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/modal/modal.iml" filepath="$PROJECT_DIR$/.idea/modules/modal/modal.iml" group="androidUtil_2/modal" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/permissioner/permissioner.iml" filepath="$PROJECT_DIR$/.idea/modules/permissioner/permissioner.iml" group="androidUtil_2/permissioner" />
     </modules>
   </component>
 </project>
