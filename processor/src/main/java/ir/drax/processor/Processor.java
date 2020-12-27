@@ -1,6 +1,7 @@
 package ir.drax.processor;
 
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -69,7 +70,29 @@ public class Processor extends AbstractProcessor {
                 classBuilder.addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
                         .addParameter(className, NameStore.Variable.ANDROID_ACTIVITY)
+                        .addStatement("bindPermissions(activity)")
                         .build());
+
+                // Bind permission method constructor
+                MethodSpec.Builder bindPermissions = MethodSpec.methodBuilder("bindPermissions")
+                        .addModifiers(Modifier.PRIVATE)
+                        .addParameter(className,"activity");
+
+
+                for (ExecutableElement executableElement : ElementFilter.methodsIn(typeElement.getEnclosedElements())) {
+                    WithPermission withPermission = executableElement.getAnnotation(WithPermission.class);
+                    if (withPermission != null) {
+
+                        bindPermissions
+                                .addStatement("$N.$N()",
+                                        NameStore.Variable.ANDROID_ACTIVITY,
+                                        executableElement.getSimpleName())
+                                .returns(void.class);
+                    }
+                }
+
+
+                classBuilder.addMethod(bindPermissions.build());
 
                /* // add method that maps the views with id
                 MethodSpec.Builder bindViewsMethodBuilder = MethodSpec
