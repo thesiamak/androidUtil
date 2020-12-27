@@ -14,6 +14,9 @@ public final class NameStore {
 
     public static class Package {
         public static final String ANDROID_VIEW = "android.view";
+        public static final String CONTENT = "androidx.core.content";
+        public static final String PACKAGE_MANAGER = "android.content.pm";
+        public static final String WIDGET = "android.widget";
     }
 
     public static class Class {

@@ -1,18 +1,24 @@
 package ir.drax.util;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +30,7 @@ import ir.drax.modal.Listener;
 import ir.drax.modal.Modal;
 import ir.drax.modal.ModalBuilder;
 import ir.drax.modal.model.JvmMoButton;
-import ir.drax.modal.model.OnClickListener;
-import ir.drax.permissioner.binder.Binding;
+import ir.drax.permissioner.binder.Permissioner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,35 +42,21 @@ public class MainActivity extends AppCompatActivity {
         initExpandable();
         initListExpandable();
 
-        Binding.bind(this);
+//        Permissioner.bind(this);
     }
 
+    @SuppressLint("ResourceType")
     public void openModal(View view) {
-
+        FrameLayout layout = new FrameLayout(this);
+        layout.setId(1);
+        FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
         Modal.builder(this)
-                .setListener(new Listener() {
-                    @Override
-                    public void onDismiss() {
-                        Toast.makeText(MainActivity.this, "dismissed!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onShow() {
-                        Toast.makeText(MainActivity.this, "showed!", Toast.LENGTH_SHORT).show();
-                    }
-                }).setType(Modal.Type.Alert)
-                .setTitle("رند کردن قیمت در صفحه waitingpassenger در اپهای مسافر و راننده اعمال نمی شود.")
-                .setMessage(getString(R.string.sample_text))
-                .setIcon(R.drawable.ic_gesture_black_24dp)
-                .setCallback(new JvmMoButton("Got it !!!!", R.drawable.ic_mood_black_24dp, new OnClickListener() {
-                    @Override
-                    public boolean onClick(View v) {
-                        Toast.makeText(MainActivity.this, "closed!", Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-                }))
+                .setType(Modal.Type.Custom)
+                .setContentView(layout)
                 .build()
                 .show();
+        fm.replace(layout.getId(),new MyFragment());
+        fm.commit();
     }
 
     public void openListModal(View view) {
@@ -111,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (!Modal.hide(this))
 
-        super.onBackPressed();
+            super.onBackPressed();
     }
 
     public void openModal2(View view) {
@@ -119,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 .setDirection(Modal.Direction.TopToBottom)
                 .setType(Modal.Type.Custom)
                 .setContentView(R.layout.sample_layout)
-        .build().show();
+                .build().show();
     }
 
     public void hideModal(View view) {
@@ -128,41 +119,41 @@ public class MainActivity extends AppCompatActivity {
 
     private ModalBuilder progressBuilder;
     public void openProgressModal(View view) {
-         if (progressBuilder==null) {
-             progressBuilder = Modal.builder(view)
-                     .setListener(new Listener() {
+        if (progressBuilder==null) {
+            progressBuilder = Modal.builder(view)
+                    .setListener(new Listener() {
 
-                         @Override
-                         public void onShow() {
-                             new Thread(new Runnable() {
-                                 @Override
-                                 public void run() {
-                                     while (progressBuilder.getState().getProgress()<99){
-                                         try {
-                                             Thread.sleep(100);
-                                             runOnUiThread(()->{
-                                                 progressBuilder.getState().setProgress(progressBuilder.getState().getProgress()+1);
-                                             });
-                                         } catch (InterruptedException e) {
-                                             e.printStackTrace();
-                                         }
-                                     }
+                        @Override
+                        public void onShow() {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    while (progressBuilder.getState().getProgress()<99){
+                                        try {
+                                            Thread.sleep(100);
+                                            runOnUiThread(()->{
+                                                progressBuilder.getState().setProgress(progressBuilder.getState().getProgress()+1);
+                                            });
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
 
-                                     runOnUiThread(()->{
-                                         progressBuilder.hide();
-                                     });
-                                 }
-                             }).start();
-                         }
-                     })
-                     .setType(Modal.Type.Progress)
-                     .setTitle("Uploading")
-                     .setMessage("Uploading file: readme.txt")
-                     .setIcon(R.drawable.ic_baseline_cloud_queue_24)
-                     .setProgress(0)
-                     .build();
+                                    runOnUiThread(()->{
+                                        progressBuilder.hide();
+                                    });
+                                }
+                            }).start();
+                        }
+                    })
+                    .setType(Modal.Type.Progress)
+                    .setTitle("Uploading")
+                    .setMessage("Uploading file: readme.txt")
+                    .setIcon(R.drawable.ic_baseline_cloud_queue_24)
+                    .setProgress(0)
+                    .build();
 
-         }
+        }
         progressBuilder.show();
     }
 
@@ -218,8 +209,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @WithPermission
+//    @WithPermission({Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE})
     void testFunc(){
         Toast.makeText(this, "testttt", Toast.LENGTH_SHORT).show();
+    }
+
+    private static void bindPerm(MainActivity activity, String... permissions){
+
+        while(ContextCompat.checkSelfPermission(activity, permissions[0]) == PackageManager.PERMISSION_GRANTED)
+
+
+        if (
+                ContextCompat.checkSelfPermission(activity, permissions[0]) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(activity, permissions[1]) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(activity, permissions[2]) == PackageManager.PERMISSION_GRANTED
+        )
+            activity.testFunc();
+        else
+            Toast.makeText(activity,"nok",Toast.LENGTH_LONG).show();
+
+
     }
 }

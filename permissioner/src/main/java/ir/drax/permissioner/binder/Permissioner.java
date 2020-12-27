@@ -3,49 +3,55 @@ package ir.drax.permissioner.binder;
 import android.app.Activity;
 
 
+import androidx.fragment.app.Fragment;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import ir.drax.annotations.internal.BindingSuffix;
 
-public class Binding {
+public class Permissioner {
 
-    private Binding() {
+    private Permissioner() {
         // not to be instantiated in public
     }
 
-    private static <T extends Activity> void instantiateBinder(T target, String suffix) {
+    private static void instantiateBinder(Object target) {
         Class<?> targetClass = target.getClass();
         String className = targetClass.getName();
         try {
             Class<?> bindingClass = targetClass
                     .getClassLoader()
-                    .loadClass(className + suffix);
+                    .loadClass(className + BindingSuffix.GENERATED_CLASS_SUFFIX);
             Constructor<?> classConstructor = bindingClass.getConstructor(targetClass);
             try {
                 classConstructor.newInstance(target);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException("Unable to invoke " + classConstructor, e);
+                new RuntimeException("Unable to invoke " + classConstructor, e).printStackTrace();
             } catch (InstantiationException e) {
-                throw new RuntimeException("Unable to invoke " + classConstructor, e);
+                new RuntimeException("Unable to invoke " + classConstructor, e).printStackTrace();
             } catch (InvocationTargetException e) {
                 Throwable cause = e.getCause();
                 if (cause instanceof RuntimeException) {
-                    throw (RuntimeException) cause;
+                    cause.printStackTrace();
                 }
                 if (cause instanceof Error) {
-                    throw (Error) cause;
+                    cause.printStackTrace();
                 }
-                throw new RuntimeException("Unable to create instance.", cause);
+                new RuntimeException("Unable to create instance.", cause).printStackTrace();
             }
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to find Class for " + className + suffix, e);
+            new RuntimeException("Unable to find Class for " + className + BindingSuffix.GENERATED_CLASS_SUFFIX, e).printStackTrace();
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Unable to find constructor for " + className + suffix, e);
+            new RuntimeException("Unable to find constructor for " + className + BindingSuffix.GENERATED_CLASS_SUFFIX, e).printStackTrace();
         }
     }
 
     public static <T extends Activity> void bind(T activity) {
-        instantiateBinder(activity, BindingSuffix.GENERATED_CLASS_SUFFIX);
+        instantiateBinder(activity);
+    }
+
+    public static <T extends Fragment> void bind(T fragment) {
+        instantiateBinder(fragment);
     }
 }
