@@ -1,7 +1,6 @@
 package ir.drax.util
 
 import android.Manifest
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +28,7 @@ class MyFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_my, container, false)
     }
 
-    @WithPermission(Manifest.permission.INTERNET)
+    @WithPermission(Manifest.permission.INTERNET,grantPermission = false)
     @Suppress("s")
      fun showSnackBar(name:Boolean):String {
         Toast.makeText(requireContext(), "Raised", Toast.LENGTH_LONG).show()

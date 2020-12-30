@@ -1,6 +1,7 @@
 package ir.drax.permissioner.binder;
 
 import android.app.Activity;
+import android.content.Context;
 
 
 import androidx.fragment.app.Fragment;

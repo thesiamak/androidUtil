@@ -2,9 +2,14 @@ package ir.drax.util;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -15,13 +20,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import ir.drax.annotations.WithPermission;
 import ir.drax.expandable.Expandable;
@@ -33,6 +43,7 @@ import ir.drax.modal.model.JvmMoButton;
 import ir.drax.permissioner.binder.Permissioner;
 
 public class MainActivity extends AppCompatActivity {
+    private static ActivityResultLauncher<String[]> mGetContent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +52,21 @@ public class MainActivity extends AppCompatActivity {
         //openModal(this);
         initExpandable();
         initListExpandable();
+        runPermission(this);
 
-//        Permissioner.bind(this);
+
+        Permissioner.bind(this);
+    }
+
+    private static void runPermission(MainActivity mainActivity){
+        mGetContent = mainActivity.registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
+                new ActivityResultCallback<Map<String, Boolean>>() {
+
+                    @Override
+                    public void onActivityResult(Map<String, Boolean> result) {
+
+                    }
+                });
     }
 
     @SuppressLint("ResourceType")
@@ -209,12 +233,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    @WithPermission({Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE})
+    @WithPermission(permission = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE})
     void testFunc(){
         Toast.makeText(this, "testttt", Toast.LENGTH_SHORT).show();
     }
 
-    private static void bindPerm(MainActivity activity, String... permissions){
+
+    private  void bindPerm(MainActivity activity, String... permissions){
 
         while(ContextCompat.checkSelfPermission(activity, permissions[0]) == PackageManager.PERMISSION_GRANTED)
 
@@ -228,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
         else
             Toast.makeText(activity,"nok",Toast.LENGTH_LONG).show();
 
-
     }
+
+
 }
