@@ -1,5 +1,2 @@
-include ':annotations'
-include ':processor'
-include ':permissioner'
 include ':app:'
 include ':expandable', ':modal'
