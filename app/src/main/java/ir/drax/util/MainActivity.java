@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -135,8 +136,10 @@ public class MainActivity extends AppCompatActivity {
                     .setContentView(R.layout.sample_layout)
                     .build();
             customModal.hide();
+
         }
         customModal.show();
+
     }
 
     public void hideModal(View view) {

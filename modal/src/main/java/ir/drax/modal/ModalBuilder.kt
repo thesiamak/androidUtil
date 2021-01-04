@@ -229,6 +229,8 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         }
     }
 
+    fun isShowing():Boolean = bg.parent != null
+
     override fun onChanged(obj: ModalObj?) {
         when (obj!!.changedIndex){
             0,2 -> setHeader(bg)
