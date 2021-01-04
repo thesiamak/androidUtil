@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidUtil_2.iml" filepath="$PROJECT_DIR$/.idea/modules/androidUtil_2.iml" group="androidUtil_2" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidUtil_2.iml" filepath="$PROJECT_DIR$/.idea/modules/androidUtil_2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/androidUtil_2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/androidUtil_2.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/expandable/androidUtil_2.expandable.iml" filepath="$PROJECT_DIR$/.idea/modules/expandable/androidUtil_2.expandable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modal/androidUtil_2.modal.iml" filepath="$PROJECT_DIR$/.idea/modules/modal/androidUtil_2.modal.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="androidUtil_2/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/expandable/expandable.iml" filepath="$PROJECT_DIR$/.idea/modules/expandable/expandable.iml" group="androidUtil_2/expandable" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/modal/modal.iml" filepath="$PROJECT_DIR$/.idea/modules/modal/modal.iml" group="androidUtil_2/modal" />
