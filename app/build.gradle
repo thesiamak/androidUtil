@@ -34,6 +34,6 @@ dependencies {
 
     implementation project(':modal')
     implementation project(':expandable')
-    implementation project(':permissioner')
-    kapt project(':processor')
+//    implementation project(':permissioner')
+//    kapt project(':processor')
 }
