@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
     public void openProgressModal(View view) {
         if (progressBuilder==null) {
             progressBuilder = Modal.builder(view)
+                    .setLockVisibility(true)
                     .setListener(new Listener() {
 
                         @Override
