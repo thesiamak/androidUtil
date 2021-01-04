@@ -135,11 +135,13 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
             if (state.icon==0) findViewById<ImageView>(R.id.icon).visibility= View.GONE
             else findViewById<ImageView>(R.id.icon).setImageResource(state.icon)
 
-            if (state.lockVisibility) findViewById<ImageView>(R.id.close).visibility= View.INVISIBLE
+            if (state.lockVisibility)
+                findViewById<ImageView>(R.id.close).visibility= View.INVISIBLE
+
         }
     }
 
-    fun closeModal(header:View, forceClose:Boolean=false):Boolean{
+    fun closeModal(header:View, forceClose:Boolean=false) : Boolean{
         return if (state.lockVisibility.not() || forceClose){
             animate().translationY(
                     if((this.tag as Modal.Direction)==Modal.Direction.BottomToTop)

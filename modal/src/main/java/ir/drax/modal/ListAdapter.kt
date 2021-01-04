@@ -1,6 +1,7 @@
 package ir.drax.modal
 
 import android.graphics.Typeface
+import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
@@ -34,6 +35,7 @@ class ListAdapter(private var typeFace:Typeface ,private var medicines: List<MoB
         fun bindMedicine(medicine: MoButton, callback: (Int) -> Unit) = with(view) {
             TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, 0, 0, medicine.iconResourceId, 0)
             text = medicine.displayText
+            gravity = Gravity.CENTER_VERTICAL
             setOnClickListener {
                 if (medicine.clickListener(this))
                     callback(adapterPosition)
