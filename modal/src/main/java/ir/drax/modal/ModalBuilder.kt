@@ -84,7 +84,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                         .setListener(object :AnimatorListenerAdapter(){
                             override fun onAnimationStart(animation: Animator?) {
                                 visibility= View.VISIBLE
-                                (bg.background as TransitionDrawable).reverseTransition(250)
+                                (bg.background as TransitionDrawable).startTransition(250)
 
                                 super.onAnimationStart(animation)
                             }
@@ -151,7 +151,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                     .setDuration(250)
                     .setListener(object :AnimatorListenerAdapter(){
                         override fun onAnimationEnd(animation: Animator?) {
-                            (header.background as TransitionDrawable).reverseTransition(250)
+                            (header.background as TransitionDrawable).resetTransition()
                             state.removeObserver(this@ModalBuilder)
                             root.removeView(header)
                             blurEffect(false)

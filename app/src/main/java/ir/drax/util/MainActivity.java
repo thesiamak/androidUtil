@@ -42,6 +42,7 @@ import ir.drax.modal.model.JvmMoButton;
 public class MainActivity extends AppCompatActivity {
     private static ActivityResultLauncher<String[]> mGetContent = null;
 
+    private ModalBuilder customModal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,11 +128,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openModal2(View view) {
-        Modal.builder(view)
-                .setDirection(Modal.Direction.TopToBottom)
-                .setType(Modal.Type.Custom)
-                .setContentView(R.layout.sample_layout)
-                .build().show();
+        if (customModal==null){
+            customModal = Modal.builder(view)
+                    .setDirection(Modal.Direction.TopToBottom)
+                    .setType(Modal.Type.Custom)
+                    .setContentView(R.layout.sample_layout)
+                    .build();
+            customModal.hide();
+        }
+        customModal.show();
     }
 
     public void hideModal(View view) {
@@ -231,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    @WithPermission(permission = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE})
+    //    @WithPermission(permission = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE})
     void testFunc(){
         Toast.makeText(this, "testttt", Toast.LENGTH_SHORT).show();
     }
@@ -242,14 +247,14 @@ public class MainActivity extends AppCompatActivity {
         while(ContextCompat.checkSelfPermission(activity, permissions[0]) == PackageManager.PERMISSION_GRANTED)
 
 
-        if (
-                ContextCompat.checkSelfPermission(activity, permissions[0]) == PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(activity, permissions[1]) == PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(activity, permissions[2]) == PackageManager.PERMISSION_GRANTED
-        )
-            activity.testFunc();
-        else
-            Toast.makeText(activity,"nok",Toast.LENGTH_LONG).show();
+            if (
+                    ContextCompat.checkSelfPermission(activity, permissions[0]) == PackageManager.PERMISSION_GRANTED
+                            && ContextCompat.checkSelfPermission(activity, permissions[1]) == PackageManager.PERMISSION_GRANTED
+                            && ContextCompat.checkSelfPermission(activity, permissions[2]) == PackageManager.PERMISSION_GRANTED
+            )
+                activity.testFunc();
+            else
+                Toast.makeText(activity,"nok",Toast.LENGTH_LONG).show();
 
     }
 
