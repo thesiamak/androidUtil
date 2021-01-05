@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidUtil.iml" filepath="$PROJECT_DIR$/.idea/modules/androidUtil.iml" group="androidUtil" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidUtil_2.iml" filepath="$PROJECT_DIR$/.idea/modules/androidUtil_2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/annotations/androidUtil_2.annotations.iml" filepath="$PROJECT_DIR$/.idea/modules/annotations/androidUtil_2.annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/androidUtil_2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/androidUtil_2.app.iml" />
@@ -9,6 +10,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/modal/androidUtil_2.modal.iml" filepath="$PROJECT_DIR$/.idea/modules/modal/androidUtil_2.modal.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/permissioner/androidUtil_2.permissioner.iml" filepath="$PROJECT_DIR$/.idea/modules/permissioner/androidUtil_2.permissioner.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/processor/androidUtil_2.processor.iml" filepath="$PROJECT_DIR$/.idea/modules/processor/androidUtil_2.processor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="androidUtil/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/expandable/expandable.iml" filepath="$PROJECT_DIR$/.idea/modules/expandable/expandable.iml" group="androidUtil/expandable" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modal/modal.iml" filepath="$PROJECT_DIR$/.idea/modules/modal/modal.iml" group="androidUtil/modal" />
     </modules>
   </component>
 </project>
