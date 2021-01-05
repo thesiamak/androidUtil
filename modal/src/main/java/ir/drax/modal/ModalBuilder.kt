@@ -49,8 +49,10 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
     }
 
     fun show(){
-        buildModal()
-        state.observeForever(this)
+        if (isShowing().not()) {
+            buildModal()
+            state.observeForever(this)
+        }
     }
     private fun buildModal(){
 
@@ -233,7 +235,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
 
     override fun onChanged(obj: ModalObj?) {
         when (obj!!.changedIndex){
-            0,2 -> setHeader(bg)
+            in 0..2 -> setHeader(bg)
             3 -> setCallback()
             4 -> setList()
             5 -> setProgress()
