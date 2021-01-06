@@ -119,6 +119,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
             }
         })
     }
+    
     private fun setHeader(header:ViewGroup){
         if (state.type != Modal.Type.Custom){
             if (state.message.displayText.isEmpty().not()){

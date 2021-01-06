@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         customModal.show();
+        customModal.hide();
 
     }
 
