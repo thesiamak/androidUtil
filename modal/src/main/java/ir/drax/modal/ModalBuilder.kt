@@ -5,10 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.TransitionDrawable
 import android.os.Build
-import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
+import android.view.*
 import android.view.animation.CycleInterpolator
 import android.widget.*
 import androidx.core.content.res.ResourcesCompat
@@ -49,9 +46,12 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
 
     fun show(){
         when(state.state){
-            Modal.State.CLOSING -> {
+            Modal.State.CLOSING-> {
                 Modal.State.OPENING
-                animateUp()
+                if (openingAnim==null)
+                    buildModal()
+                else
+                    animateUp()
             }
             in Modal.State.OPENED..Modal.State.OPENING -> { }
             else -> {
@@ -61,8 +61,8 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         }
 
         state.observeForever(this)
-
     }
+
     private fun buildModal(){
         if(bg.parent ==null) {
             root.addView(bg, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
@@ -92,6 +92,43 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                             }
                         }
 
+                    openingAnim = animate()
+                    .setStartDelay(250)
+                            .setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationStart(animation: Animator?) {
+                                    visibility = View.VISIBLE
+                                    (bg.background as TransitionDrawable).startTransition(250)
+
+                                    super.onAnimationStart(animation)
+                                }
+
+                                override fun onAnimationEnd(animation: Animator?) {
+                                    state.listener?.onShow()
+                                    if (state.type != Modal.Type.Custom) {
+                                        findViewById<View>(R.id.ok)
+                                                .animate()
+                                                .translationY(
+                                                        if (state.direction == Modal.Direction.BottomToTop)
+                                                            -16f
+                                                        else
+                                                            0f
+                                                )
+                                                .setDuration(400)
+                                                .setInterpolator(CycleInterpolator(0.1f))
+                                                .start()
+                                    }
+                                    state.state = Modal.State.OPENED
+                                    super.onAnimationEnd(animation)
+                                    blurEffect(true)
+                                }
+                            })
+                            .translationY(
+                                    if ((state.direction) == Modal.Direction.BottomToTop)
+                                        -height.toFloat()
+                                    else
+                                        height.toFloat())
+                            .setDuration(500)
+
                    animateUp()
                 }
             })
@@ -99,47 +136,10 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
 
         }
     }
-    val openingAnim = animate()
-            .setStartDelay(250)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationStart(animation: Animator?) {
-                    visibility = View.VISIBLE
-                    (bg.background as TransitionDrawable).startTransition(250)
-
-                    super.onAnimationStart(animation)
-                }
-
-                override fun onAnimationEnd(animation: Animator?) {
-                    state.listener?.onShow()
-                    if (state.type != Modal.Type.Custom) {
-                        findViewById<View>(R.id.ok)
-                                .animate()
-                                .translationY(
-                                        if (state.direction == Modal.Direction.BottomToTop)
-                                            -16f
-                                        else
-                                            0f
-                                )
-                                .setDuration(400)
-                                .setInterpolator(CycleInterpolator(0.1f))
-                                .start()
-                    }
-                    state.state = Modal.State.OPENED
-                    super.onAnimationEnd(animation)
-                    blurEffect(true)
-                }
-            })
-            .translationY(
-                    if ((state.direction) == Modal.Direction.BottomToTop)
-                        -height.toFloat()
-                    else
-                        height.toFloat())
-            .setDuration(500)
+    private var openingAnim:ViewPropertyAnimator?=null
 
     private fun animateUp() {
-       closingAnim.cancel()
-       openingAnim.cancel()
-       openingAnim.start()
+       openingAnim?.start()
     }
 
     private fun setHeader(header:ViewGroup){
@@ -166,35 +166,32 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         }
     }
     private var headerView:View? = null
-    val closingAnim = animate().translationY(
-            if((this.tag as Modal.Direction)==Modal.Direction.BottomToTop)
-                height.toFloat()
-            else
-                -height.toFloat())
-            .setDuration(250)
-            .setListener(object :AnimatorListenerAdapter(){
-                override fun onAnimationEnd(animation: Animator?) {
-                    if (state.state != Modal.State.CLOSING)return
-
-                    (headerView?.background as TransitionDrawable).resetTransition()
-                    state.removeObserver(this@ModalBuilder)
-                    root.removeView(headerView)
-                    blurEffect(false)
-                    state.listener.let {
-                        it?.onDismiss()
-                    }
-                    state.state = Modal.State.CLOSED
-                    super.onAnimationEnd(animation)
-                }
-            })
 
     fun closeModal(header:View, forceClose:Boolean=false) : Boolean{
         return if (state.lockVisibility.not() || forceClose){
             headerView =header
             state.state = Modal.State.CLOSING
-            openingAnim.cancel()
-            closingAnim.cancel()
-            closingAnim.start()
+            animate().translationY(
+                    if((this.tag as Modal.Direction)==Modal.Direction.BottomToTop)
+                        height.toFloat()
+                    else
+                        -height.toFloat())
+                    .setDuration(250)
+                    .setListener(object :AnimatorListenerAdapter(){
+                        override fun onAnimationEnd(animation: Animator?) {
+                            if (state.state != Modal.State.CLOSING)return
+
+                            (headerView?.background as TransitionDrawable).resetTransition()
+                            state.removeObserver(this@ModalBuilder)
+                            root.removeView(headerView)
+                            blurEffect(false)
+                            state.listener.let {
+                                it?.onDismiss()
+                            }
+                            state.state = Modal.State.CLOSED
+                            super.onAnimationEnd(animation)
+                        }
+                    }).start()
 
             true
 
