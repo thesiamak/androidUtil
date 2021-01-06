@@ -135,9 +135,11 @@ public class MainActivity extends AppCompatActivity {
                     .setType(Modal.Type.Custom)
                     .setContentView(R.layout.sample_layout)
                     .build();
-            customModal.hide();
 
         }
+        customModal.hide();
+        customModal.show();
+        customModal.hide();
         customModal.show();
         customModal.hide();
 

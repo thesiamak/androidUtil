@@ -26,6 +26,7 @@ open class ModalObj @JvmOverloads constructor(
     var direction=Modal.Direction.BottomToTop
     var blurEnabled:Boolean=false
     var lockVisibility:Boolean=false
+    var state:Modal.State= Modal.State.NONE
     var type=Modal.Type.Alert
 
     var title:CharSequence=""
