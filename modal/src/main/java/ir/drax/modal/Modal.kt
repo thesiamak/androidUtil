@@ -9,7 +9,6 @@ import ir.drax.modal.model.ModalObj
 class Modal {
     enum class Type{ Alert, List, Custom, Progress}
     enum class Direction{ TopToBottom, BottomToTop}
-    enum class State{ OPENED,OPENING, CLOSED, CLOSING, NONE }
 
     companion object{
         @JvmStatic

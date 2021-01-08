@@ -137,11 +137,12 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
         }
-        customModal.hide();
+//        customModal.hide();
         customModal.show();
         customModal.hide();
         customModal.show();
         customModal.hide();
+        customModal.show();
 
     }
 

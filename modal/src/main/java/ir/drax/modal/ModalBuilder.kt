@@ -19,6 +19,10 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
     private var bg:ViewGroup
 
     private val root=state.root
+    private var openingAnim:ViewPropertyAnimator?=null
+    private var closingAnim:ViewPropertyAnimator?=null
+    private var layoutListener:ViewTreeObserver.OnGlobalLayoutListener?=null
+
 
     init {
         addView(state.modal, LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT))
@@ -45,33 +49,17 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
     }
 
     fun show(){
-        when(state.state){
-            Modal.State.CLOSING-> {
-                Modal.State.OPENING
-                if (openingAnim==null)
-                    buildModal()
-                else
-                    animateUp()
-            }
-            in Modal.State.OPENED..Modal.State.OPENING -> { }
-            else -> {
-                state.state = Modal.State.OPENING
-                buildModal()
-            }
-        }
-
+        buildModal()
         state.observeForever(this)
     }
 
     private fun buildModal(){
         if(bg.parent ==null) {
             root.addView(bg, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-            root.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+             layoutListener =object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
 
                     root.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
-                    if (state.state != Modal.State.OPENING) return
 
                     val fLayoutParams = FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                     if (state.direction == Modal.Direction.BottomToTop) {
@@ -93,7 +81,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                         }
 
                     openingAnim = animate()
-                    .setStartDelay(250)
+                            .setStartDelay(250)
                             .setListener(object : AnimatorListenerAdapter() {
                                 override fun onAnimationStart(animation: Animator?) {
                                     visibility = View.VISIBLE
@@ -117,7 +105,6 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                                                 .setInterpolator(CycleInterpolator(0.1f))
                                                 .start()
                                     }
-                                    state.state = Modal.State.OPENED
                                     super.onAnimationEnd(animation)
                                     blurEffect(true)
                                 }
@@ -129,17 +116,41 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                                         height.toFloat())
                             .setDuration(500)
 
-                   animateUp()
+                    openingAnim?.start()
                 }
-            })
-        }else{
+            }
+            root.viewTreeObserver?.addOnGlobalLayoutListener(layoutListener)
 
         }
     }
-    private var openingAnim:ViewPropertyAnimator?=null
 
-    private fun animateUp() {
-       openingAnim?.start()
+    fun closeModal(header:View, forceClose:Boolean=false) : Boolean{
+        return if (state.lockVisibility.not() || forceClose){
+            root.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+            closingAnim = animate().translationY(
+                    if((this.tag as Modal.Direction)==Modal.Direction.BottomToTop)
+                        height.toFloat()
+                    else
+                        -height.toFloat())
+                    .setDuration(250)
+                    .setListener(object :AnimatorListenerAdapter(){
+                        override fun onAnimationEnd(animation: Animator?) {
+                            (header.background as TransitionDrawable).resetTransition()
+                            state.removeObserver(this@ModalBuilder)
+                            root.removeView(header)
+                            blurEffect(false)
+                            state.listener.let {
+                                it?.onDismiss()
+                            }
+                            super.onAnimationEnd(animation)
+                        }
+                    })
+            closingAnim?.start()
+
+            true
+
+        }else
+            false
     }
 
     private fun setHeader(header:ViewGroup){
@@ -164,39 +175,6 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                 findViewById<ImageView>(R.id.close).visibility= View.INVISIBLE
 
         }
-    }
-    private var headerView:View? = null
-
-    fun closeModal(header:View, forceClose:Boolean=false) : Boolean{
-        return if (state.lockVisibility.not() || forceClose){
-            headerView =header
-            state.state = Modal.State.CLOSING
-            animate().translationY(
-                    if((this.tag as Modal.Direction)==Modal.Direction.BottomToTop)
-                        height.toFloat()
-                    else
-                        -height.toFloat())
-                    .setDuration(250)
-                    .setListener(object :AnimatorListenerAdapter(){
-                        override fun onAnimationEnd(animation: Animator?) {
-                            if (state.state != Modal.State.CLOSING)return
-
-                            (headerView?.background as TransitionDrawable).resetTransition()
-                            state.removeObserver(this@ModalBuilder)
-                            root.removeView(headerView)
-                            blurEffect(false)
-                            state.listener.let {
-                                it?.onDismiss()
-                            }
-                            state.state = Modal.State.CLOSED
-                            super.onAnimationEnd(animation)
-                        }
-                    }).start()
-
-            true
-
-        }else
-            false
     }
 
     private fun setCallback(){
