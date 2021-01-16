@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     public void openModal2(View view) {
         if (customModal==null){
             customModal = Modal.builder(view)
-                    .setDirection(Modal.Direction.TopToBottom)
+//                    .setDirection(Modal.Direction.TopToBottom)
                     .setType(Modal.Type.Custom)
                     .setContentView(R.layout.sample_layout)
                     .build();

@@ -30,6 +30,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         visibility= View.INVISIBLE
         bg =FrameLayout(state.root.context)
         bg.tag=ModalObj.VIEW_TAG_ID
+        bg.fitsSystemWindows=true
         setViewDirection()
         setHeader(bg)
         setProgress()
