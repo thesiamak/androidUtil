@@ -5,14 +5,32 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import ir.drax.modal.Listener
 import ir.drax.modal.Modal
+import java.util.*
 
 open class ModalObj @JvmOverloads constructor(
         open var root:ViewGroup,
         var listener:Listener?=null,
         var modal:View?=null,
-        var contentView:View?=null
+        var contentView:View?=null,
+        var onShow:()->Unit={},
+        var onDismiss:()->Unit={},
 
 ): LiveData<ModalObj>() {
+    init {
+        if (listener == null) {
+            listener = object:Listener(){
+                override fun onDismiss() {
+                    super.onDismiss()
+                    onDismiss.invoke()
+                }
+
+                override fun onShow() {
+                    super.onShow()
+                    onShow.invoke()
+                }
+            }
+        }
+    }
     companion object{
         @JvmField var VIEW_TAG_ID: String? = this.javaClass.canonicalName
     }
