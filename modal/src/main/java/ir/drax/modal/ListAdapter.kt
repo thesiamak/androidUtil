@@ -33,7 +33,7 @@ class ListAdapter(private var typeFace:Typeface ,private var medicines: List<MoB
         private var view: TextView = v
 
         fun bindMedicine(medicine: MoButton, callback: (Int) -> Unit) = with(view) {
-            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, 0, 0, medicine.iconResourceId, 0)
+            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, medicine.iconResourceId, 0, 0, 0)
             text = medicine.displayText
             gravity = Gravity.CENTER_VERTICAL
             setOnClickListener {

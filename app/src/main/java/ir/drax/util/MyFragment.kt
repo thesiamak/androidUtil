@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import ir.drax.annotations.WithPermission
-import ir.drax.permissioner.binder.Permissioner
 
 class MyFragment : Fragment() {
 
@@ -17,8 +15,8 @@ class MyFragment : Fragment() {
 
 
 
-        Permissioner.bind(this)
-        MyFragmentWithPermission.showSnackBar(true)
+//        Permissioner.bind(this)
+//        MyFragmentWithPermission.showSnackBar(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +26,7 @@ class MyFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_my, container, false)
     }
 
-    @WithPermission(Manifest.permission.INTERNET,grantPermission = false)
+//    @WithPermission(Manifest.permission.INTERNET,grantPermission = false)
     @Suppress("s")
      fun showSnackBar(name:Boolean):String {
         Toast.makeText(requireContext(), "Raised", Toast.LENGTH_LONG).show()

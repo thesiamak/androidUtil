@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -28,23 +29,21 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import ir.drax.annotations.WithPermission;
 import ir.drax.expandable.Expandable;
 import ir.drax.expandable.WaterfallExpandable;
 import ir.drax.modal.Listener;
 import ir.drax.modal.Modal;
 import ir.drax.modal.ModalBuilder;
 import ir.drax.modal.model.JvmMoButton;
-import ir.drax.permissioner.binder.Permissioner;
 
 public class MainActivity extends AppCompatActivity {
     private static ActivityResultLauncher<String[]> mGetContent = null;
 
+    private ModalBuilder customModal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         runPermission(this);
 
 
-        Permissioner.bind(this);
+//        Permissioner.bind(this);
     }
 
     private static void runPermission(MainActivity mainActivity){
@@ -130,11 +129,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openModal2(View view) {
-        Modal.builder(view)
-                .setDirection(Modal.Direction.TopToBottom)
-                .setType(Modal.Type.Custom)
-                .setContentView(R.layout.sample_layout)
-                .build().show();
+        if (customModal==null){
+            customModal = Modal.builder(view)
+//                    .setDirection(Modal.Direction.TopToBottom)
+                    .setType(Modal.Type.Custom)
+                    .setContentView(R.layout.sample_layout)
+                    .build();
+
+        }
+//        customModal.hide();
+        customModal.show();
+        customModal.hide();
+        customModal.show();
+        customModal.hide();
+        customModal.show();
+
     }
 
     public void hideModal(View view) {
@@ -234,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @WithPermission(permission = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE})
+    //    @WithPermission(permission = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE})
     void testFunc(){
         Toast.makeText(this, "testttt", Toast.LENGTH_SHORT).show();
     }
@@ -245,14 +254,14 @@ public class MainActivity extends AppCompatActivity {
         while(ContextCompat.checkSelfPermission(activity, permissions[0]) == PackageManager.PERMISSION_GRANTED)
 
 
-        if (
-                ContextCompat.checkSelfPermission(activity, permissions[0]) == PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(activity, permissions[1]) == PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(activity, permissions[2]) == PackageManager.PERMISSION_GRANTED
-        )
-            activity.testFunc();
-        else
-            Toast.makeText(activity,"nok",Toast.LENGTH_LONG).show();
+            if (
+                    ContextCompat.checkSelfPermission(activity, permissions[0]) == PackageManager.PERMISSION_GRANTED
+                            && ContextCompat.checkSelfPermission(activity, permissions[1]) == PackageManager.PERMISSION_GRANTED
+                            && ContextCompat.checkSelfPermission(activity, permissions[2]) == PackageManager.PERMISSION_GRANTED
+            )
+                activity.testFunc();
+            else
+                Toast.makeText(activity,"nok",Toast.LENGTH_LONG).show();
 
     }
 
