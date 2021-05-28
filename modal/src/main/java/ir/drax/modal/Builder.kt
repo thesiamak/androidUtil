@@ -101,10 +101,6 @@ class Builder(override var root: ViewGroup):ModalObj(root) {
                 else -> inflated
             }
 
-            MoButton("",0) {
-                true
-            }
-
             return ModalBuilder(this)
 
 

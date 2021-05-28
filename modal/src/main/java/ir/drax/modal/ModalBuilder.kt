@@ -181,6 +181,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         if (state.type!=Modal.Type.Custom){
             state.callback?.let { cb ->
                 findViewById<TextView>(R.id.ok).apply {
+                    visibility = View.VISIBLE
                     text = cb.displayText
                     setCompoundDrawablesWithIntrinsicBounds(cb.iconResourceId,0,0,0)
                     setOnClickListener {
