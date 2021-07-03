@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.TransitionDrawable
 import android.os.Build
+import android.util.AttributeSet
 import android.view.*
 import android.view.animation.CycleInterpolator
 import android.widget.*
@@ -14,7 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ir.drax.modal.model.ModalObj
 
-class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Context?=state.root.context):RelativeLayout(context),Observer<ModalObj> {
+class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Context=state.root.context, attrs: AttributeSet?=null, defStyleAttr: Int = 0):RelativeLayout(context,attrs,defStyleAttr)
+        ,Observer<ModalObj> {
 
     private var bg:ViewGroup
 
@@ -48,15 +50,16 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
         closeModal(bg,true)
     }
 
-    fun show(){
+    fun show():ModalBuilder{
         buildModal()
         state.observeForever(this)
+        return this
     }
 
     private fun buildModal(){
         if(bg.parent ==null) {
             root.addView(bg, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-             layoutListener =object : ViewTreeObserver.OnGlobalLayoutListener {
+            layoutListener =object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
 
                     root.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -161,7 +164,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                 summary.setCompoundDrawablesWithIntrinsicBounds(state.message.iconResourceId,0,0,0)
                 summary.setOnClickListener {
                     if(state.message.clickListener(summary))
-                        closeModal(header)
+                        closeModal(header,true)
                 }
             }
 
@@ -185,7 +188,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                     setCompoundDrawablesWithIntrinsicBounds(cb.iconResourceId,0,0,0)
                     setOnClickListener {
                         if (cb.clickListener(this))
-                            closeModal(bg)
+                            closeModal(bg,true)
 
                     }
                 }
