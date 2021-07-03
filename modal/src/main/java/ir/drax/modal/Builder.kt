@@ -1,14 +1,11 @@
 package ir.drax.modal
 
-import android.content.Context
 import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import ir.drax.modal.model.MoButton
 import ir.drax.modal.model.ModalObj
-import ir.drax.modal.model.UnsatisfiedParametersException
 
 class Builder(override var root: ViewGroup):ModalObj(root) {
 
@@ -97,10 +94,6 @@ class Builder(override var root: ViewGroup):ModalObj(root) {
                     modal
                 }
                 else -> inflated
-            }
-
-            MoButton("",0) {
-                true
             }
 
             return ModalBuilder(this)

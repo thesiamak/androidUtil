@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         Modal.builder(this)
                 .setType(Modal.Type.Custom)
                 .setContentView(layout)
+                .setBlurEnabled(true)
                 .build()
                 .show();
         fm.replace(layout.getId(),new MyFragment());
@@ -85,22 +86,7 @@ public class MainActivity extends AppCompatActivity {
     public void openListModal(View view) {
         List<JvmMoButton> buttonList =new ArrayList<>();
         buttonList.add(new JvmMoButton(Html.fromHtml("Repair service:  <i>$2506 Dollars</i>"),R.drawable.ic_build_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_brush_black_24dp,(v)->{
+         buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_brush_black_24dp,(v)->{
             Toast.makeText(this, "sssss", Toast.LENGTH_SHORT).show();
             return true;
         }));
@@ -111,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 .setType(Modal.Type.List)
                 .setTitle("Sample list modal")
                 .setIcon(R.drawable.ic_gesture_black_24dp)
+                .setBlurEnabled(true)
                 .setList(buttonList)
                 .setMessage(new JvmMoButton("2706 Total",R.drawable.ic_attach_money_black_24dp,null))
                 .setCallback(new JvmMoButton("Share", R.drawable.ic_share_black_24dp, v -> {
@@ -133,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             customModal = Modal.builder(view)
 //                    .setDirection(Modal.Direction.TopToBottom)
                     .setType(Modal.Type.Custom)
+                    .setBlurEnabled(true)
                     .setContentView(R.layout.sample_layout)
                     .build();
 
@@ -182,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .setType(Modal.Type.Progress)
                     .setTitle("Uploading")
+                    .setBlurEnabled(true)
                     .setMessage("Uploading file: readme.txt")
                     .setIcon(R.drawable.ic_baseline_cloud_queue_24)
                     .setProgress(0)

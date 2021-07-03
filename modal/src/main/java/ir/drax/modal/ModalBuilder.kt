@@ -3,6 +3,8 @@ package ir.drax.modal
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Build
 import android.util.AttributeSet
@@ -10,10 +12,17 @@ import android.view.*
 import android.view.animation.CycleInterpolator
 import android.widget.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.drawToBitmap
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ir.drax.modal.model.ModalObj
+import ir.drax.modal.util.ImageUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Context=state.root.context, attrs: AttributeSet?=null, defStyleAttr: Int = 0):RelativeLayout(context,attrs,defStyleAttr)
         ,Observer<ModalObj> {
@@ -21,10 +30,24 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
     private var bg:ViewGroup
 
     private val root=state.root
+    private val ANIMATION_DURATION=250L
     private var openingAnim:ViewPropertyAnimator?=null
     private var closingAnim:ViewPropertyAnimator?=null
     private var layoutListener:ViewTreeObserver.OnGlobalLayoutListener?=null
 
+    private val blurBg = ImageView(context).apply {
+        alpha = 0f
+        GlobalScope.launch(Dispatchers.IO) {
+            BlurBuilder(context)
+                    .blur(
+                            root.drawToBitmap()
+                    ).let {bitmap->
+                        withContext(Dispatchers.Main){
+                            setImageBitmap(bitmap)
+                        }
+                    }
+        }
+    }
 
     init {
         addView(state.modal, LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT))
@@ -42,6 +65,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
             bg.elevation=100f
         }
         bg.setOnClickListener{closeModal(bg)}
+        bg.addView(blurBg,ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT))
         bg.addView(this)
 
     }
@@ -84,11 +108,11 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                         }
 
                     openingAnim = animate()
-                            .setStartDelay(250)
+                            .setStartDelay(ANIMATION_DURATION)
                             .setListener(object : AnimatorListenerAdapter() {
                                 override fun onAnimationStart(animation: Animator?) {
                                     visibility = View.VISIBLE
-                                    (bg.background as TransitionDrawable).startTransition(250)
+                                    (bg.background as TransitionDrawable).startTransition(ANIMATION_DURATION.toInt())
 
                                     super.onAnimationStart(animation)
                                 }
@@ -109,7 +133,6 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                                                 .start()
                                     }
                                     super.onAnimationEnd(animation)
-                                    blurEffect(true)
                                 }
                             })
                             .translationY(
@@ -117,8 +140,8 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                                         -height.toFloat()
                                     else
                                         height.toFloat())
-                            .setDuration(500)
-
+                            .setDuration(2*ANIMATION_DURATION)
+                    blurEffect(true)
                     openingAnim?.start()
                 }
             }
@@ -135,7 +158,7 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
                         height.toFloat()
                     else
                         -height.toFloat())
-                    .setDuration(250)
+                    .setDuration(ANIMATION_DURATION)
                     .setListener(object :AnimatorListenerAdapter(){
                         override fun onAnimationEnd(animation: Animator?) {
                             (header.background as TransitionDrawable).resetTransition()
@@ -237,6 +260,11 @@ class ModalBuilder @JvmOverloads constructor(val state:ModalObj, context: Contex
     private fun blurEffect(set:Boolean){
         if (state.blurEnabled){
             //Do some blur magic..
+            if(set)
+                blurBg.animate().setDuration(ANIMATION_DURATION).alpha(1f).start()
+
+            else
+                blurBg.animate().setDuration(ANIMATION_DURATION).alpha(0f).start()
         }
     }
 
