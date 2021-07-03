@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
         buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
         buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
-        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize servifce :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
         buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
         buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
         buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
