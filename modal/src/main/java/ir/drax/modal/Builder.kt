@@ -74,15 +74,13 @@ class Builder(override var root: ViewGroup):ModalObj(root) {
         return this
     }
 
-    fun build():ModalBuilder?{
-        try {
-
+    fun build():ModalBuilder{
             val view = when(this.type){
                 Modal.Type.Alert -> R.layout.modal_alert_layout
                 Modal.Type.Progress -> R.layout.modal_progress_layout
                 Modal.Type.List -> R.layout.modal_list_layout
                 Modal.Type.Custom -> 0
-                else -> throw UnsatisfiedParametersException()
+                else -> R.layout.modal_alert_layout
             }
 
 
@@ -106,12 +104,6 @@ class Builder(override var root: ViewGroup):ModalObj(root) {
             }
 
             return ModalBuilder(this)
-
-
-        }catch (e:UnsatisfiedParametersException){
-            e.printStackTrace()
-            return null
-        }
     }
 
 }

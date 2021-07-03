@@ -3,6 +3,7 @@ package ir.drax.modal
 import android.graphics.Typeface
 import android.view.Gravity
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,9 @@ class ListAdapter(private var typeFace:Typeface ,private var medicines: List<MoB
             typeface=typeFace
             compoundDrawablePadding=8
             setPadding(32,16,32,16)
-            layoutParams= ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+            layoutParams= LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                setMargins(0,8,0,8)
+            }
         }
         return MedicineHolder(textView)
     }
