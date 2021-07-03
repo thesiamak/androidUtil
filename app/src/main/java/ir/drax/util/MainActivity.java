@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         Modal.builder(this)
                 .setType(Modal.Type.Custom)
                 .setContentView(layout)
-                .setBlurEnabled(true)
                 .build()
                 .show();
         fm.replace(layout.getId(),new MyFragment());
@@ -86,7 +85,22 @@ public class MainActivity extends AppCompatActivity {
     public void openListModal(View view) {
         List<JvmMoButton> buttonList =new ArrayList<>();
         buttonList.add(new JvmMoButton(Html.fromHtml("Repair service:  <i>$2506 Dollars</i>"),R.drawable.ic_build_black_24dp,null));
-         buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_brush_black_24dp,(v)->{
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_content_cut_black_24dp,null));
+        buttonList.add(new JvmMoButton(Html.fromHtml("Resize service :  <i>$1500 Dollars</i>"),R.drawable.ic_brush_black_24dp,(v)->{
             Toast.makeText(this, "sssss", Toast.LENGTH_SHORT).show();
             return true;
         }));
