@@ -1,9 +1,9 @@
 package ir.drax.modal
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.VisibleForTesting
 import ir.drax.modal.model.ModalObj
 
 class Modal {
@@ -11,14 +11,19 @@ class Modal {
     enum class Direction{ TopToBottom, BottomToTop}
 
     companion object{
+        @SuppressLint("StaticFieldLeak")
+        private var options = ModalObj
+                .Builder()
+                .build()
+
         @JvmStatic
         fun builder(activity: Activity):Builder{
-            return Builder(activity.findViewById(android.R.id.content))
+            return Builder(activity.findViewById(android.R.id.content),options.copy())
         }
 
         @JvmStatic
         fun builder(anyVisibleView: View):Builder{
-            return Builder(anyVisibleView.rootView.findViewById(android.R.id.content))
+            return Builder(anyVisibleView.rootView.findViewById(android.R.id.content),options.copy())
         }
 
         @JvmStatic
@@ -36,7 +41,7 @@ class Modal {
             return if (bg == null) false
             else{
                 val modal=bg.getChildAt(bg.childCount-1) as ModalBuilder
-                modal.closeModal(bg)
+                modal.hide(bg)
             }
 
         }
@@ -53,6 +58,10 @@ class Modal {
                 null
         }
 
+        @JvmStatic
+        fun init(options:ModalObj){
+            Companion.options = options
+        }
     }
 }
 

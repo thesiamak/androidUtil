@@ -7,72 +7,72 @@ import android.widget.RelativeLayout
 import ir.drax.modal.model.MoButton
 import ir.drax.modal.model.ModalObj
 
-class Builder(override var root: ViewGroup):ModalObj(root) {
+class Builder(private var root: ViewGroup, private val options:ModalObj) {
 
     fun setDirection(direction:Modal.Direction):Builder{
-        this.direction=direction;return this
+        options.direction=direction;return this
     }
 
     fun setBlurEnabled (blurEnabled:Boolean):Builder{
-        this.blurEnabled=blurEnabled
+        options.blurEnabled=blurEnabled
         return this
     }
 
     fun  setLockVisibility(lockVisibility:Boolean):Builder{
-        this.lockVisibility=lockVisibility
+        options.lockVisibility=lockVisibility
         return this
     }
     fun  setListener(listener:Listener):Builder{
-        this.listener=listener
+        options.listener=listener
         return this
     }
     fun  setType(type:Modal.Type):Builder{
-        this.type=type
+        options.type=type
         return this
     }
     fun  setCallback(callback:MoButton):Builder{
-        this.callback=callback
+        options.callback=callback
         return this
     }
     fun  setTitle(title:CharSequence):Builder{
-        this.title=title
+        options.title=title
         return this
     }
     fun  setIcon(icon:Int):Builder{
-        this.icon=icon
+        options.icon=icon
         return this
     }
     fun  setContentView(view:Int):Builder{
-        contentView = View.inflate(root.context,view,null)
+        options.contentView = View.inflate(root.context,view,null)
         return this
     }
     fun  setContentView(view: View):Builder{
-        this.contentView=view
+        options.contentView=view
         return this
     }
 
     fun  setProgress(progress:Int):Builder{
-        this.progress=progress
+        options.progress=progress
         return this
     }
 
     fun  setMessage(message:CharSequence):Builder{
-        this.message= MoButton(message,0)
+        options.message= MoButton(message,0)
         return this
     }
 
     fun  setMessage(message:MoButton):Builder{
-        this.message=message
+        options.message=message
         return this
     }
 
     fun  setList(list:List<MoButton>):Builder{
-        this.list = list
+        options.list = list
         return this
     }
 
     fun build():ModalBuilder{
-            val view = when(this.type){
+            val view = when(options.type){
                 Modal.Type.Alert -> R.layout.modal_alert_layout
                 Modal.Type.Progress -> R.layout.modal_progress_layout
                 Modal.Type.List -> R.layout.modal_list_layout
@@ -84,10 +84,10 @@ class Builder(override var root: ViewGroup):ModalObj(root) {
             val inflated = if (view != 0)
                 View.inflate(root.context,view,null)
             else
-                contentView
+                options.contentView
 
 
-            this.modal = when(this.type){
+            options.modal = when(options.type){
                 Modal.Type.Custom -> {
                     val modal = RelativeLayout(ContextThemeWrapper(root.context,R.style.modal_root))
                     modal.addView(inflated, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -96,7 +96,7 @@ class Builder(override var root: ViewGroup):ModalObj(root) {
                 else -> inflated
             }
 
-            return ModalBuilder(this)
+            return ModalBuilder(options,root)
     }
 
 }

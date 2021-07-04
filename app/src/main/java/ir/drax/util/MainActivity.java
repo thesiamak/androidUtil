@@ -1,18 +1,11 @@
 package ir.drax.util;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -39,6 +32,7 @@ import ir.drax.modal.Listener;
 import ir.drax.modal.Modal;
 import ir.drax.modal.ModalBuilder;
 import ir.drax.modal.model.JvmMoButton;
+import ir.drax.modal.model.ModalObj;
 
 public class MainActivity extends AppCompatActivity {
     private static ActivityResultLauncher<String[]> mGetContent = null;
@@ -48,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Modal.init(
+                new ModalObj.Builder()
+                        .blurEnabled(true)
+                        .build()
+        );
+
         //openModal(this);
         initExpandable();
         initListExpandable();
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout layout = new FrameLayout(this);
         layout.setId(1);
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-        Modal.builder(this)
+        ModalBuilder m = Modal.builder(this)
                 .setType(Modal.Type.Custom)
                 .setContentView(layout)
                 .build()
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 .setType(Modal.Type.List)
                 .setTitle("Sample list modal")
                 .setIcon(R.drawable.ic_gesture_black_24dp)
-                .setBlurEnabled(true)
                 .setList(buttonList)
                 .setMessage(new JvmMoButton("2706 Total",R.drawable.ic_attach_money_black_24dp,null))
                 .setCallback(new JvmMoButton("Share", R.drawable.ic_share_black_24dp, v -> {
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             customModal = Modal.builder(view)
 //                    .setDirection(Modal.Direction.TopToBottom)
                     .setType(Modal.Type.Custom)
-                    .setBlurEnabled(true)
+                    .setBlurEnabled(false)
                     .setContentView(R.layout.sample_layout)
                     .build();
 
@@ -164,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    while (progressBuilder.getState().getProgress()<99){
+                                    while (progressBuilder.getOptions().getProgress()<99){
                                         try {
                                             Thread.sleep(100);
                                             runOnUiThread(()->{
-                                                progressBuilder.getState().setProgress(progressBuilder.getState().getProgress()+1);
+                                                progressBuilder.getOptions().setProgress(progressBuilder.getOptions().getProgress()+1);
                                             });
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
@@ -184,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .setType(Modal.Type.Progress)
                     .setTitle("Uploading")
-                    .setBlurEnabled(true)
                     .setMessage("Uploading file: readme.txt")
                     .setIcon(R.drawable.ic_baseline_cloud_queue_24)
                     .setProgress(0)
