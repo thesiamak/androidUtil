@@ -34,34 +34,6 @@ class ModalObj private constructor(): MutableLiveData<ModalObj>() {
     var onShow:()->Unit={}
     var onDismiss:()->Unit={}
     var blurEnabled:Boolean=false
-    init {
-        if (listener == null) {
-            listener = object:Listener(){
-                override fun onDismiss() {
-                    super.onDismiss()
-                    onDismiss.invoke()
-                }
-
-                override fun onShow() {
-                    super.onShow()
-                    onShow.invoke()
-                }
-            }
-        }
-
-
-    }
-    companion object{
-        @JvmField
-         var VIEW_TAG_ID: String? = this.javaClass.canonicalName
-    }
-
-    var changedIndex:Int=-1
-
-    private fun changedIndex(index:Int):ModalObj{
-        changedIndex=index
-        return this
-    }
     var direction=Modal.Direction.BottomToTop
     var lockVisibility:Boolean=false
     var type=Modal.Type.Alert
@@ -101,6 +73,32 @@ class ModalObj private constructor(): MutableLiveData<ModalObj>() {
             field=value
             postValue(changedIndex(5))
         }
+    init {
+        if (listener == null) {
+            listener = object:Listener(){
+                override fun onDismiss() {
+                    super.onDismiss()
+                    onDismiss.invoke()
+                }
+
+                override fun onShow() {
+                    super.onShow()
+                    onShow.invoke()
+                }
+            }
+        }
+
+
+    }
+
+
+    var changedIndex:Int=-1
+
+    private fun changedIndex(index:Int):ModalObj{
+        changedIndex=index
+        return this
+    }
+
 
 
     class Builder{
@@ -119,5 +117,10 @@ class ModalObj private constructor(): MutableLiveData<ModalObj>() {
         fun callback(callback: MoButton) = apply { this.modalObj.callback = callback }
 
         fun build() = modalObj
+    }
+
+    companion object{
+        @JvmField
+        var VIEW_TAG_ID: String? = this.javaClass.canonicalName
     }
 }
