@@ -30,17 +30,19 @@ class ModalBuilder @JvmOverloads constructor(val options:ModalObj, val root: Vie
     private var closingAnim:ViewPropertyAnimator?=null
     private var layoutListener: OnGlobalLayoutListener?=null
 
-    private val blurBg = ImageView(context).apply {
-        alpha = 0f
-        GlobalScope.launch(Dispatchers.IO) {
-            BlurBuilder(context)
-                    .blur(
-                            root.drawToBitmap()
-                    ).let {bitmap->
-                        withContext(Dispatchers.Main){
-                            setImageBitmap(bitmap)
+    private val blurBg :ImageView by lazy {
+        ImageView(context).apply {
+            alpha = 0f
+            GlobalScope.launch(Dispatchers.IO) {
+                BlurBuilder(context)
+                        .blur(
+                                root.drawToBitmap()
+                        ).let {bitmap->
+                            withContext(Dispatchers.Main){
+                                setImageBitmap(bitmap)
+                            }
                         }
-                    }
+            }
         }
     }
 
@@ -277,8 +279,8 @@ class ModalBuilder @JvmOverloads constructor(val options:ModalObj, val root: Vie
     fun update(obj: ModalObj)= with(obj){
         when{
             title!=options.title ||
-            message!=options.message ||
-            icon!=options.icon -> setHeader(bg)
+                    message!=options.message ||
+                    icon!=options.icon -> setHeader(bg)
 
             callback != options.callback -> setCallback()
             list != options.list -> setList()
