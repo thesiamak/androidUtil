@@ -9,6 +9,95 @@ import ir.drax.modal.model.ModalObj
 
 class Builder(private var root: ViewGroup, private val options:ModalObj) {
 
+    var listener:Listener?
+        get() = options.listener
+        set(value){
+            options.listener = value
+        }
+
+    var contentView:View?
+        get() = options.contentView
+        set(value){
+            options.contentView = value
+        }
+
+    var onShow:()->Unit
+        get() = options.onShow
+        set(value){
+            options.onShow = value
+        }
+    var onDismiss:()->Unit
+        get() = options.onDismiss
+        set(value){
+            options.onDismiss = value
+        }
+
+    var blurEnabled:Boolean
+        get() = options.blurEnabled
+        set(value){
+            options.blurEnabled = value
+        }
+
+    var direction:Modal.Direction
+        get() = options.direction
+        set(value){
+            options.direction = value
+        }
+
+    var lockVisibility:Boolean
+        get() = options.lockVisibility
+        set(value){
+            options.lockVisibility = value
+        }
+
+    var type:Modal.Type
+        get() = options.type
+        set(value){
+            options.type = value
+        }
+
+    var title:CharSequence
+        get() = options.title
+        set(value){
+            options.title = value
+        }
+
+    var messageBtn:MoButton
+        get() = options.message
+        set(value){
+            options.message = value
+        }
+
+    var message:CharSequence
+        get() = options.message.displayText
+        set(value){
+            options.message = MoButton(value,options.message.iconResourceId,options.message.clickListener)
+        }
+
+    var icon
+        get() = options.icon
+        set(value){
+            options.icon = value
+        }
+
+    var callback: MoButton?
+        get() = options.callback
+        set(value){
+            options.callback = value
+        }
+
+    var list:List<MoButton>
+        get() = options.list
+        set(value){
+            options.list = value
+        }
+
+    var progress:Int
+        get() = options.progress
+        set(value){
+            options.progress = value
+        }
+
     fun setDirection(direction:Modal.Direction):Builder{
         options.direction=direction;return this
     }
