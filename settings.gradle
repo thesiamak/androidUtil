@@ -1,2 +1,2 @@
 include ':app:'
-include ':expandable', ':modal'
+include ':expandable', ':modal', ':extensions'
