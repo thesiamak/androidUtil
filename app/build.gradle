@@ -10,6 +10,8 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -27,6 +29,9 @@ android {
 }
 
 dependencies {
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
+
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.preference:preference-ktx:1.1.1'
@@ -34,7 +39,7 @@ dependencies {
 
     implementation project(':modal')
     implementation project(':expandable')
-//    implementation project(':extensions')
+    implementation project(':extensions')
 //    implementation project(':permissioner')
 //    kapt project(':processor')
 }

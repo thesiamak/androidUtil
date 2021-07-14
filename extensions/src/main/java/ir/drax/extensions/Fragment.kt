@@ -1,6 +1,6 @@
 package ir.drax.extensions
 
-import android.Manifest
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -10,11 +10,14 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import ir.drax.modal.Modal
+import ir.drax.modal.ModalBuilder
+import ir.drax.modal.model.MoButton
 import java.io.File
-import java.util.*
 
 
 /**
@@ -71,7 +74,7 @@ fun Fragment.message(message: Int, actionText: String = "", callback: View.OnCli
     message(getString(message), actionText, callback)
 }
 
-fun Fragment.message(message: String, actionText: String = "", callback: View.OnClickListener? = null): ModalBuilder? {
+fun Fragment.message(message: String, actionText: String = "", callback: View.OnClickListener? = null): ModalBuilder {
     val modal = Modal.builder(requireActivity()).apply {
         setMessage(message)
         icon = R.drawable.ic_outline_info_24
@@ -83,7 +86,7 @@ fun Fragment.message(message: String, actionText: String = "", callback: View.On
             })
 
     }.build()
-    modal?.show()
+    modal.show()
     return modal
 }
 
@@ -119,9 +122,8 @@ fun Fragment.openLink(url: String) {
 /**
  *  Permission dialog
  * */
-private val REQUIRED_PERMISSIONS = arrayOf(
-    Manifest.permission.WAKE_LOCK
-)
+
+var REQUIRED_PERMISSIONS = arrayOf<String>()
 
 fun Fragment.requirePermissions(): Boolean {
     // Main part to grant permission.
@@ -136,12 +138,27 @@ fun Fragment.requirePermissions(): Boolean {
     }
 }
 
-fun Fragment.findHost(): Host? {
-    return try {
-        val hostFragment = parentFragment?.parentFragment as Host
-        hostFragment
+
+/***      Show-Hide keyboard functions  ***/
+fun hideKeyboard(activity: Activity?) {
+    try {
+        activity?.let {
+            if (activity.currentFocus != null && activity.currentFocus!!.windowToken != null) {
+                (activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                        activity.currentFocus!!.windowToken,
+                        0
+                )
+            }
+        }
     } catch (e: Exception) {
         e.printStackTrace()
-        null
     }
+}
+
+
+fun showKeyboard(context: Context?) {
+    (context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).toggleSoftInput(
+            InputMethodManager.SHOW_FORCED,
+            InputMethodManager.HIDE_IMPLICIT_ONLY
+    )
 }
