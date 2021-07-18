@@ -21,7 +21,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ModalBuilder @JvmOverloads constructor(val options:ModalObj, val root: ViewGroup, context: Context=root.context, attrs: AttributeSet?=null, defStyleAttr: Int = 0):RelativeLayout(context,attrs,defStyleAttr)
+class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: ViewGroup, context: Context=root.context, attrs: AttributeSet?=null, defStyleAttr: Int = 0):RelativeLayout(context,attrs,defStyleAttr)
         ,Observer<ModalObj> {
 
     private var bg:ViewGroup
@@ -73,7 +73,7 @@ class ModalBuilder @JvmOverloads constructor(val options:ModalObj, val root: Vie
 
     fun show():ModalBuilder{
         buildModal()
-        options.observeForever(this)
+        options.update.observeForever(this)
         return this
     }
 
@@ -159,7 +159,7 @@ class ModalBuilder @JvmOverloads constructor(val options:ModalObj, val root: Vie
                     .setListener(object :AnimatorListenerAdapter(){
                         override fun onAnimationEnd(animation: Animator?) {
                             (header.background as TransitionDrawable).resetTransition()
-                            options.removeObserver(this@ModalBuilder)
+                            options.update.removeObserver(this@ModalBuilder)
                             root.removeView(header)
                             blurEffect(false)
                             options.listener.let {
@@ -268,24 +268,52 @@ class ModalBuilder @JvmOverloads constructor(val options:ModalObj, val root: Vie
     fun isShowing():Boolean = bg.parent != null
 
     override fun onChanged(obj: ModalObj) {
-        when (obj.changedIndex){
-            in 0..2 -> setHeader(bg)
-            3 -> setCallback()
-            4 -> setList()
-            5 -> setProgress()
+        val patches: MutableList<() -> Unit> = mutableListOf()
+
+        if(
+                obj.title!=options.title ||
+                obj.message!=options.message ||
+                obj.icon!=options.icon
+        ){
+            patches += {
+                setHeader(bg)
+            }
+        }
+
+        if(
+                obj.callback!=options.callback ||
+                obj.onDismiss!=options.onDismiss ||
+                obj.onShow!=options.onShow
+        ){
+            patches += {
+                setCallback()
+            }
+        }
+
+        if(
+                obj.list!=options.list
+        ){
+            patches += {
+                setList()
+            }
+        }
+
+        if(
+                obj.progress!=options.progress
+        ){
+            patches += {
+                setProgress()
+            }
+        }
+
+        options = obj
+        patches.forEach {
+            it.invoke()
         }
     }
 
-    fun update(obj: ModalObj)= with(obj){
-        when{
-            title!=options.title ||
-                    message!=options.message ||
-                    icon!=options.icon -> setHeader(bg)
-
-            callback != options.callback -> setCallback()
-            list != options.list -> setList()
-            progress != options.progress -> setProgress()
-
-        }
+    fun update(patch: ModalObj.()->Unit) = with(options.copy()){
+        patch()
+        options.update.postValue(this)
     }
 }
