@@ -1,16 +1,20 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.5"
-        vectorDrawables.useSupportLibrary = true
+        versionCode 1
+        versionName "1.0"
 
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -23,14 +27,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
-
 dependencies {
+
+    implementation project(':modal')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:$core_ktx"
     implementation "androidx.appcompat:appcompat:$appcompat"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
-    implementation "androidx.cardview:cardview:$cardview"
+    implementation "com.google.android.material:material:$material"
+    implementation "com.google.code.gson:gson:$gson"
 
 }
