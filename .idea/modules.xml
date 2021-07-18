@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidUtil_2.iml" filepath="$PROJECT_DIR$/.idea/modules/androidUtil_2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/annotations/androidUtil_2.annotations.iml" filepath="$PROJECT_DIR$/.idea/modules/annotations/androidUtil_2.annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/androidUtil_2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/androidUtil_2.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/expandable/androidUtil_2.expandable.iml" filepath="$PROJECT_DIR$/.idea/modules/expandable/androidUtil_2.expandable.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/extensions/androidUtil_2.extensions.iml" filepath="$PROJECT_DIR$/.idea/modules/extensions/androidUtil_2.extensions.iml" />

@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initExpandable() {
-        val expandable = findViewById<WaterfallExpandable>(R.id.waterfallExpandableList)
+        /*val expandable = findViewById<WaterfallExpandable>(R.id.waterfallExpandableList)
         val textView = TextView(this)
         textView.text = "Heyyy, I'm a Textview with a message.\nClick me to add more views..."
         textView.setTextColor(Color.WHITE)
@@ -172,11 +172,11 @@ class MainActivity : AppCompatActivity() {
         imageView.setOnClickListener { v: View? -> expandable.collapse() }
         expandable.title = "My expandable list"
         expandable.icon = R.drawable.ic_build_black_24dp
-        expandable.addChild(textView, imageView)
+        expandable.addChild(textView, imageView)*/
     }
 
     private fun initListExpandable() {
-        val expandable = findViewById<Expandable>(R.id.myExpandableList)
+        /*val expandable = findViewById<Expandable>(R.id.myExpandableList)
         val recyclerView = ListView(this)
         val itemsAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList<String>())
         recyclerView.adapter = itemsAdapter
@@ -188,7 +188,7 @@ class MainActivity : AppCompatActivity() {
         expandable.title = "My recyclerView expandable list"
         expandable.icon = R.drawable.ic_build_black_24dp
         expandable.addChild(textView, recyclerView)
-        expandable.stateObservable.addObserver { observable: Observable?, o: Any -> if (o as Boolean) Toast.makeText(this@MainActivity, "Event observer catched expand status ", Toast.LENGTH_LONG).show() }
+        expandable.stateObservable.addObserver { observable: Observable?, o: Any -> if (o as Boolean) Toast.makeText(this@MainActivity, "Event observer catched expand status ", Toast.LENGTH_LONG).show() }*/
     }
 
     //    @WithPermission(permission = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE})
