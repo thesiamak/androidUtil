@@ -2,8 +2,6 @@ package ir.drax.util
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Html
 import android.view.View
@@ -13,26 +11,20 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.widget.ImageViewCompat
-import ir.drax.expandable.Expandable
-import ir.drax.expandable.WaterfallExpandable
 import ir.drax.modal.Listener
 import ir.drax.modal.Modal
-import ir.drax.modal.Modal.Companion.builder
-import ir.drax.modal.Modal.Companion.hide
-import ir.drax.modal.Modal.Companion.init
 import ir.drax.modal.ModalBuilder
 import ir.drax.modal.model.JvmMoButton
-import ir.drax.modal.model.ModalObj
+import ir.drax.modal.model.MoButton
 import ir.drax.modal.model.OnClickListener
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private var customModal: ModalBuilder? = null
+    private lateinit var customModal: ModalBuilder
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        init {
+        Modal.init {
             blurEnabled = true
         }
 
@@ -50,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         val layout = FrameLayout(this)
         layout.id = 1
         val fm = supportFragmentManager.beginTransaction()
-        val m = builder(this)
+        val m = Modal.builder(this)
                 .setType(Modal.Type.Custom)
                 .setContentView(layout)
                 .build()
@@ -84,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             }
         }))
         buttonList.add(JvmMoButton(Html.fromHtml("Discount :  <u>$500 Dollars</u>"), R.drawable.ic_mood_black_24dp, null))
-        builder(this)
+        val listModal = Modal.builder(this)
                 .setType(Modal.Type.List)
                 .setTitle("Sample list modal")
                 .setIcon(R.drawable.ic_gesture_black_24dp)
@@ -97,26 +89,29 @@ class MainActivity : AppCompatActivity() {
                     }
                 }))
                 .build().show()
+
+        listModal.update {
+            title = "Sample title patched!"
+            list = listModal.options.list + MoButton("Last Item(patched as well)")
+        }
     }
 
     override fun onBackPressed() {
-        if (!hide(this)) super.onBackPressed()
+        if (!Modal.hide(this)) super.onBackPressed()
     }
 
     fun openModal2(view: View?) {
-        if (customModal == null) {
-            customModal = builder(view!!) //                    .setDirection(Modal.Direction.TopToBottom)
-                    .setType(Modal.Type.Custom)
-                    .setBlurEnabled(false)
-                    .setContentView(R.layout.sample_layout)
-                    .build()
-        }
-        //        customModal.hide();
-        customModal!!.show()
-        customModal!!.hide()
-        customModal!!.show()
-        customModal!!.hide()
-        customModal!!.show()
+        customModal = Modal.builder(view!!) //                    .setDirection(Modal.Direction.TopToBottom)
+                .setType(Modal.Type.Custom)
+                .setBlurEnabled(false)
+                .setContentView(R.layout.sample_layout)
+                .build()
+
+        customModal.show()
+        customModal.hide()
+        customModal.show()
+        customModal.hide()
+        customModal.show()
     }
 
     fun hideModal(view: View?) {
@@ -126,7 +121,7 @@ class MainActivity : AppCompatActivity() {
     private var progressBuilder: ModalBuilder? = null
     fun openProgressModal(view: View?) {
         if (progressBuilder == null) {
-            progressBuilder = builder(view!!)
+            progressBuilder = Modal.builder(view!!)
                     .setLockVisibility(true)
                     .setListener(object : Listener() {
                         override fun onShow() {

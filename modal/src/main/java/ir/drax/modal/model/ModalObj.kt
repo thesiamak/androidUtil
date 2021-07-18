@@ -4,13 +4,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import ir.drax.modal.Listener
 import ir.drax.modal.Modal
 import java.util.*
+import kotlin.properties.ObservableProperty
 
-class ModalObj private constructor(): MutableLiveData<ModalObj>() {
+data class ModalObj(
+        var type:Modal.Type=Modal.Type.Alert
+) {
 
-    fun copy() = ModalObj().let {
+    /*fun copy() = ModalObj().let {
         it.listener = listener
         it.modal = modal
         it.contentView = contentView
@@ -27,7 +31,7 @@ class ModalObj private constructor(): MutableLiveData<ModalObj>() {
         it.list = list
         it.progress = progress
         it
-    }
+    }*/
     var listener:Listener?=null
     var modal:View?=null
     var contentView:View?=null
@@ -36,43 +40,13 @@ class ModalObj private constructor(): MutableLiveData<ModalObj>() {
     var blurEnabled:Boolean=false
     var direction=Modal.Direction.BottomToTop
     var lockVisibility:Boolean=false
-    var type=Modal.Type.Alert
-
     var title:CharSequence=""
-        set(value) {
-            field=value
-            postValue(changedIndex(0))
-        }
-
     var message = MoButton("")
-        set(value) {
-            field=value
-            postValue(changedIndex(1))
-        }
-
     var icon=0
-        set(value) {
-            field=value
-            postValue(changedIndex(2))
-        }
-
     var callback: MoButton? =null
-        set(value) {
-            field=value
-            postValue(changedIndex(3))
-        }
-
     var list= listOf<MoButton>()
-        set(value) {
-            field=value
-            postValue(changedIndex(4))
-        }
-
     var progress=0
-        set(value) {
-            field=value
-            postValue(changedIndex(5))
-        }
+
     init {
         if (listener == null) {
             listener = object:Listener(){
@@ -92,14 +66,7 @@ class ModalObj private constructor(): MutableLiveData<ModalObj>() {
     }
 
 
-    var changedIndex:Int=-1
-
-    private fun changedIndex(index:Int):ModalObj{
-        changedIndex=index
-        return this
-    }
-
-
+    var update:MutableLiveData<ModalObj> = MutableLiveData<ModalObj>()
 
     class Builder{
         private val modalObj = ModalObj()
