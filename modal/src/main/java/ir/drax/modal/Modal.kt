@@ -59,8 +59,8 @@ class Modal {
         }
 
         @JvmStatic
-        fun init(options:ModalObj){
-            Companion.options = options
+        fun init(options:ModalObj.()->Unit) = with(Companion.options){
+            options()
         }
     }
 }
