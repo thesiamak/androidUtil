@@ -99,6 +99,12 @@ class Builder(private var root: ViewGroup, private val options:ModalObj) {
             options.progress = value
         }
 
+    var backgroundDrawable:Drawable?
+        get() = options.backgroundDrawable
+        set(value){
+            options.backgroundDrawable = value
+        }
+
     fun setDirection(direction:Modal.Direction):Builder{
         options.direction=direction;
         return this

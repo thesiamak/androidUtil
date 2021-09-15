@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity,"Dismissed!",Toast.LENGTH_SHORT).show()
             }
             setMessage("Update message ..")
+            backdr
         }.build()
     }
 
