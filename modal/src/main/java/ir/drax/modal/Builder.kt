@@ -1,5 +1,6 @@
 package ir.drax.modal
 
+import android.graphics.drawable.Drawable
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
@@ -98,6 +99,12 @@ class Builder(private var root: ViewGroup, private val options:ModalObj) {
             options.progress = value
         }
 
+    var backgroundDrawable:Drawable?
+        get() = options.backgroundDrawable
+        set(value){
+            options.backgroundDrawable = value
+        }
+
     fun setDirection(direction:Modal.Direction):Builder{
         options.direction=direction;
         return this
@@ -136,6 +143,10 @@ class Builder(private var root: ViewGroup, private val options:ModalObj) {
         options.contentView = View.inflate(root.context,view,null)
         return this
     }
+    fun  setBackground(drawable: Drawable?):Builder{
+        options.backgroundDrawable = drawable
+        return this
+    }
     fun  setContentView(view: View):Builder{
         options.contentView=view
         return this
@@ -168,7 +179,6 @@ class Builder(private var root: ViewGroup, private val options:ModalObj) {
             Modal.Type.List -> R.layout.modal_list_layout
             Modal.Type.Custom -> 0
         }
-
 
         val inflated = if (view != 0)
             View.inflate(root.context,view,null)

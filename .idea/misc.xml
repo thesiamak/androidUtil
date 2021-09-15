@@ -4,8 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.4111111111111111" />
+        <entry key="app/src/main/res/drawable/custom_bg.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3375893769152196" />
+        <entry key="app/src/main/res/layout/sample_layout.xml" value="0.3375893769152196" />
+        <entry key="modal/src/main/res/drawable/bottom_button.xml" value="0.3645833333333333" />
+        <entry key="modal/src/main/res/drawable/bottom_curved_header.xml" value="0.20520833333333333" />
         <entry key="modal/src/main/res/drawable/modal_root_transition.xml" value="0.3645833333333333" />
+        <entry key="modal/src/main/res/drawable/top_curved_header.xml" value="0.3645833333333333" />
+        <entry key="modal/src/main/res/layout/modal_alert_layout.xml" value="0.3375893769152196" />
       </map>
     </option>
   </component>

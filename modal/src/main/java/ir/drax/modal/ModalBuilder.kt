@@ -96,7 +96,7 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                     root.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                     val fLayoutParams = FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                    if (options.direction == Modal.Direction.BottomToTop) {
+                    if (options.direction == Modal.Direction.Bottom) {
                         fLayoutParams.gravity = Gravity.BOTTOM
                         fLayoutParams.bottomMargin = -height
                     } else {
@@ -118,10 +118,12 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                             .setStartDelay(options.animationStartDelay)
                             .setListener(object : AnimatorListenerAdapter() {
                                 override fun onAnimationStart(animation: Animator?) {
-                                    (bg.background as TransitionDrawable).startTransition(options.animationDuration.toInt())
+                                    if(options.blurEnabled.not())
+                                        (bg.background as TransitionDrawable).startTransition(options.animationDuration.toInt())
+                                    else
+                                        blurEffect(true)
 
                                     super.onAnimationStart(animation)
-                                    alpha = 1f
                                 }
 
                                 override fun onAnimationEnd(animation: Animator?) {
@@ -130,7 +132,7 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                                         findViewById<View>(R.id.ok)
                                                 .animate()
                                                 .translationY(
-                                                        if (options.direction == Modal.Direction.BottomToTop)
+                                                        if (options.direction == Modal.Direction.Bottom)
                                                             -16f
                                                         else
                                                             0f
@@ -143,7 +145,7 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                                 }
                             })
                             .translationY(
-                                    if ((options.direction) == Modal.Direction.BottomToTop)
+                                    if ((options.direction) == Modal.Direction.Bottom)
                                         -height.toFloat()
                                     else
                                         height.toFloat())
@@ -167,7 +169,6 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                             visibility = View.VISIBLE
                         },50)
 
-                    blurEffect(true)
                     openingAnim?.start()
 
                 }
@@ -180,17 +181,20 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
         return if (options.lockVisibility.not() || forceClose){
             root.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
             closingAnim = animate().translationY(
-                    if((this.tag as Modal.Direction)==Modal.Direction.BottomToTop)
+                    if((this.tag as Modal.Direction)==Modal.Direction.Bottom)
                         height.toFloat()
                     else
                         -height.toFloat())
                     .setDuration(options.animationDuration)
                     .setListener(object :AnimatorListenerAdapter(){
                         override fun onAnimationEnd(animation: Animator?) {
-                            (header.background as TransitionDrawable).resetTransition()
+                            if(options.blurEnabled.not())
+                                (header.background as TransitionDrawable).resetTransition()
+                            else
+                                blurEffect(false)
+
                             options.update.removeObserver(this@ModalBuilder)
                             root.removeView(header)
-                            blurEffect(false)
                             options.listener.let {
                                 it?.onDismiss()
                             }
@@ -241,7 +245,6 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                     }
                 }
             }
-
         }
     }
 
@@ -275,10 +278,12 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
     }
 
     private fun setViewDirection(){
-        background = if (options.direction==Modal.Direction.BottomToTop)
-            ResourcesCompat.getDrawable(resources,R.drawable.top_curved_header,null)
-        else
-            ResourcesCompat.getDrawable(resources,R.drawable.bottom_curved_header,null)
+        background =
+                when {
+                    options.backgroundDrawable != null -> options.backgroundDrawable
+                    options.direction == Modal.Direction.Bottom -> ResourcesCompat.getDrawable(resources,R.drawable.top_curved_header,null)
+                    else -> ResourcesCompat.getDrawable(resources,R.drawable.bottom_curved_header,null)
+                }
     }
 
 
