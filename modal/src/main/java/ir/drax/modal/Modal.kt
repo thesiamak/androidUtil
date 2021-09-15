@@ -7,8 +7,17 @@ import android.view.ViewGroup
 import ir.drax.modal.model.ModalObj
 
 class Modal {
-    enum class Type{ Alert, List, Custom, Progress}
-    enum class Direction{ TopToBottom, BottomToTop}
+
+    sealed class Type{
+        object Alert : Type()
+        object List : Type()
+        object Custom : Type()
+        object Progress : Type()
+    }
+    sealed class Direction{
+        object TopToBottom : Direction()
+        object BottomToTop : Direction()
+    }
 
     companion object{
         @SuppressLint("StaticFieldLeak")
@@ -18,7 +27,7 @@ class Modal {
 
         @JvmStatic
         fun builder(activity: Activity):Builder{
-            return Builder(activity.findViewById(android.R.id.content),options.copy())
+            return Builder(activity.findViewById(android.R.id.content), options.copy())
         }
 
         @JvmStatic
@@ -61,6 +70,7 @@ class Modal {
         @JvmStatic
         fun init(options:ModalObj.()->Unit) = with(Companion.options){
             options()
+            println(Companion.options.blurEnabled)
         }
     }
 }

@@ -99,7 +99,8 @@ class Builder(private var root: ViewGroup, private val options:ModalObj) {
         }
 
     fun setDirection(direction:Modal.Direction):Builder{
-        options.direction=direction;return this
+        options.direction=direction;
+        return this
     }
 
     fun setBlurEnabled (blurEnabled:Boolean):Builder{
@@ -160,32 +161,31 @@ class Builder(private var root: ViewGroup, private val options:ModalObj) {
         return this
     }
 
-    fun build():ModalBuilder{
-            val view = when(options.type){
-                Modal.Type.Alert -> R.layout.modal_alert_layout
-                Modal.Type.Progress -> R.layout.modal_progress_layout
-                Modal.Type.List -> R.layout.modal_list_layout
-                Modal.Type.Custom -> 0
-                else -> R.layout.modal_alert_layout
-            }
+    fun build():ModalBuilder {
+        val view = when(options.type){
+            Modal.Type.Alert -> R.layout.modal_alert_layout
+            Modal.Type.Progress -> R.layout.modal_progress_layout
+            Modal.Type.List -> R.layout.modal_list_layout
+            Modal.Type.Custom -> 0
+        }
 
 
-            val inflated = if (view != 0)
-                View.inflate(root.context,view,null)
-            else
-                options.contentView
+        val inflated = if (view != 0)
+            View.inflate(root.context,view,null)
+        else
+            options.contentView
 
 
-            options.modal = when(options.type){
-                Modal.Type.Custom -> {
-                    val modal = RelativeLayout(ContextThemeWrapper(root.context,R.style.modal_root))
-                    modal.addView(inflated, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT))
-                    modal
-                }
-                else -> inflated
-            }
+        options.modal =
+                if(options.type == Modal.Type.Custom)
+                    RelativeLayout(ContextThemeWrapper(root.context,R.style.modal_root)).apply {
+                        addView(inflated, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT))
+                    }
 
-            return ModalBuilder(options,root)
+                else
+                    inflated
+
+        return ModalBuilder(options,root)
     }
 
 }
