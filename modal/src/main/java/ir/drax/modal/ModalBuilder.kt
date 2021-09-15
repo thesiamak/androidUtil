@@ -217,7 +217,6 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                 }
             }
 
-
             findViewById<TextView>(R.id.title).text = options.title
 
             if (options.icon==0) findViewById<ImageView>(R.id.icon).visibility= View.GONE
