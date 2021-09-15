@@ -11,41 +11,27 @@ import java.util.*
 import kotlin.properties.ObservableProperty
 
 data class ModalObj(
-        var type:Modal.Type=Modal.Type.Alert
+        private val source:ModalObj? = null,
+        var type:Modal.Type = source?.type ?: Modal.Type.Alert
 ) {
 
-    /*fun copy() = ModalObj().let {
-        it.listener = listener
-        it.modal = modal
-        it.contentView = contentView
-        it.onShow = onShow
-        it.onDismiss = onDismiss
-        it.blurEnabled = blurEnabled
-        it.direction = direction
-        it.lockVisibility = lockVisibility
-        it.type = type
-        it.title = title
-        it.message = message
-        it.icon = icon
-        it.callback = callback
-        it.list = list
-        it.progress = progress
-        it
-    }*/
-    var listener:Listener?=null
-    var modal:View?=null
-    var contentView:View?=null
-    var onShow:()->Unit={}
-    var onDismiss:()->Unit={}
-    var blurEnabled:Boolean=false
-    var direction=Modal.Direction.BottomToTop
-    var lockVisibility:Boolean=false
-    var title:CharSequence=""
-    var message = MoButton("")
-    var icon=0
-    var callback: MoButton? =null
-    var list= listOf<MoButton>()
-    var progress=0
+    var listener:Listener?= source?.listener
+    var modal:View?= source?.modal
+    var contentView:View? = source?.contentView
+    var onShow:()->Unit= source?.onShow ?: {}
+    var onDismiss:()->Unit= source?.onDismiss ?:{}
+    var blurEnabled:Boolean= source?.blurEnabled ?: false
+    var direction:Modal.Direction = source?.direction ?: Modal.Direction.BottomToTop
+    var lockVisibility:Boolean= source?.lockVisibility ?: false
+    var title:CharSequence= source?.title ?: ""
+    var message:MoButton = source?.message ?: MoButton("")
+    var icon:Int = source?.icon?: 0
+    var callback: MoButton? = source?.callback
+    var list:List<MoButton> = source?.list ?: listOf()
+    var progress:Int = source?.progress ?: 0
+
+    var animationDuration:Long = source?.animationDuration ?: 250L
+    var animationStartDelay:Long = source?.animationStartDelay ?: 0L
 
     init {
         if (listener == null) {
@@ -66,7 +52,7 @@ data class ModalObj(
     }
 
 
-    var update:MutableLiveData<ModalObj> = MutableLiveData<ModalObj>()
+    var update = MutableLiveData<ModalObj>()
 
     class Builder{
         private val modalObj = ModalObj()
@@ -90,4 +76,8 @@ data class ModalObj(
         @JvmField
         var VIEW_TAG_ID: String? = this.javaClass.canonicalName
     }
+
+
+    fun copy() = ModalObj(source = this)
+
 }

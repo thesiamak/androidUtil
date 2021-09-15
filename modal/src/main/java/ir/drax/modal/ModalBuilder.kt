@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.TransitionDrawable
 import android.os.Build
+import android.os.Handler
 import android.util.AttributeSet
 import android.view.*
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -20,28 +21,37 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: ViewGroup, context: Context=root.context, attrs: AttributeSet?=null, defStyleAttr: Int = 0):RelativeLayout(context,attrs,defStyleAttr)
         ,Observer<ModalObj> {
 
     private var bg:ViewGroup
-    private val ANIMATION_DURATION=250L
     private var openingAnim:ViewPropertyAnimator?=null
     private var closingAnim:ViewPropertyAnimator?=null
     private var layoutListener: OnGlobalLayoutListener?=null
 
     private val blurBg :ImageView by lazy {
-        ImageView(context).apply {
+        ImageView(root.context).apply {
             alpha = 0f
-            GlobalScope.launch(Dispatchers.IO) {
-                BlurBuilder(context)
-                        .blur(
-                                root.drawToBitmap()
-                        ).let {bitmap->
+        }
+    }
+
+    private fun drawBlurBg(){
+        val screenToCapture = root.drawToBitmap()
+
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                BlurBuilder(root.context)
+                        .blur(screenToCapture).let {bitmap ->
+
                             withContext(Dispatchers.Main){
-                                setImageBitmap(bitmap)
+                                blurBg.setImageBitmap(bitmap)
                             }
                         }
+
+            }catch (e:Exception){
+                e.printStackTrace()
             }
         }
     }
@@ -105,13 +115,13 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                         }
 
                     openingAnim = animate()
-                            .setStartDelay(ANIMATION_DURATION)
+                            .setStartDelay(options.animationStartDelay)
                             .setListener(object : AnimatorListenerAdapter() {
                                 override fun onAnimationStart(animation: Animator?) {
-                                    visibility = View.VISIBLE
-                                    (bg.background as TransitionDrawable).startTransition(ANIMATION_DURATION.toInt())
+                                    (bg.background as TransitionDrawable).startTransition(options.animationDuration.toInt())
 
                                     super.onAnimationStart(animation)
+                                    alpha = 1f
                                 }
 
                                 override fun onAnimationEnd(animation: Animator?) {
@@ -125,7 +135,7 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                                                         else
                                                             0f
                                                 )
-                                                .setDuration(400)
+                                                .setDuration(options.animationDuration)
                                                 .setInterpolator(CycleInterpolator(0.1f))
                                                 .start()
                                     }
@@ -137,13 +147,32 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                                         -height.toFloat()
                                     else
                                         height.toFloat())
-                            .setDuration(2*ANIMATION_DURATION)
+
+                            .setDuration(options.animationDuration)
+
+
+                    /**
+                     * To prevent flicker. In some cases screen goes white for a few frames before the animation starts.
+                     * It's due to early view preview. So, We set the visibility right after the animation began.
+                     * For backward compatibility, a delayed handler does the work.
+                     */
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        openingAnim?.setUpdateListener {
+                            if (it.currentPlayTime > 0 && this@ModalBuilder.visibility == View.INVISIBLE)
+                                visibility = View.VISIBLE
+                        }
+
+                    else
+                        Handler().postDelayed({
+                            visibility = View.VISIBLE
+                        },50)
+
                     blurEffect(true)
                     openingAnim?.start()
+
                 }
             }
             root.viewTreeObserver?.addOnGlobalLayoutListener(layoutListener)
-
         }
     }
 
@@ -155,7 +184,7 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                         height.toFloat()
                     else
                         -height.toFloat())
-                    .setDuration(ANIMATION_DURATION)
+                    .setDuration(options.animationDuration)
                     .setListener(object :AnimatorListenerAdapter(){
                         override fun onAnimationEnd(animation: Animator?) {
                             (header.background as TransitionDrawable).resetTransition()
@@ -257,11 +286,13 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
     private fun blurEffect(set:Boolean){
         if (options.blurEnabled){
             //Do some blur magic..
-            if(set)
-                blurBg.animate().setDuration(ANIMATION_DURATION).alpha(1f).start()
+            if(set){
+                drawBlurBg()
+                blurBg.animate().setDuration(options.animationDuration).alpha(1f).start()
+            }
 
             else
-                blurBg.animate().setDuration(ANIMATION_DURATION).alpha(0f).start()
+                blurBg.animate().setDuration(options.animationDuration).alpha(0f).start()
         }
     }
 

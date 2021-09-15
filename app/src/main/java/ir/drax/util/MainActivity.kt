@@ -21,12 +21,23 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var customModal: ModalBuilder
+
+    private val updateProgressModal by lazy {
+        Modal.builder(this).apply {
+            type = Modal.Type.Progress
+            title = "Updating .."
+            onDismiss = {
+
+                Toast.makeText(this@MainActivity,"Dismissed!",Toast.LENGTH_SHORT).show()
+            }
+            setMessage("Update message ..")
+        }.build()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Modal.init {
-            blurEnabled = true
-        }
+
 
         //openModal(this);
         initExpandable()
@@ -35,6 +46,24 @@ class MainActivity : AppCompatActivity() {
 
 
 //        Permissioner.bind(this);
+
+//        updateProgressModal.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Modal.init {
+            blurEnabled = true
+        }
+
+        Modal
+                .builder(this).apply {
+                    title = "Hiii!"
+                    message = "Message is here!\n second line of message as well! :) "
+
+                }
+                .build()
+                .show()
     }
 
     @SuppressLint("ResourceType")
@@ -42,11 +71,15 @@ class MainActivity : AppCompatActivity() {
         val layout = FrameLayout(this)
         layout.id = 1
         val fm = supportFragmentManager.beginTransaction()
-        val m = Modal.builder(this)
-                .setType(Modal.Type.Custom)
-                .setContentView(layout)
-                .build()
-                .show()
+        Modal.builder(this).apply {
+            onDismiss = {
+                Toast.makeText(this@MainActivity,"Dismissed!",Toast.LENGTH_SHORT).show()
+            }
+
+            type = Modal.Type.Custom
+            contentView = layout
+        }.build().show()
+
         fm.replace(layout.id, MyFragment())
         fm.commit()
     }
@@ -94,6 +127,7 @@ class MainActivity : AppCompatActivity() {
             title = "Sample title patched!"
             list = listModal.options.list + MoButton("Last Item(patched as well)")
         }
+
     }
 
     override fun onBackPressed() {
