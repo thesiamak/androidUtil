@@ -15,8 +15,8 @@ class Modal {
         object Progress : Type()
     }
     sealed class Direction{
-        object TopToBottom : Direction()
-        object BottomToTop : Direction()
+        object Top : Direction()
+        object Bottom : Direction()
     }
 
     companion object{

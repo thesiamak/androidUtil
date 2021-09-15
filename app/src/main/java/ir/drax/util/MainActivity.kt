@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import ir.drax.modal.Listener
 import ir.drax.modal.Modal
 import ir.drax.modal.ModalBuilder
@@ -38,24 +39,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        //openModal(this);
-        initExpandable()
-        initListExpandable()
-        runPermission(this)
-
-
-//        Permissioner.bind(this);
-
-//        updateProgressModal.show()
-    }
-
-    override fun onResume() {
-        super.onResume()
         Modal.init {
             blurEnabled = true
         }
+        simpleModal()
 
+        initExpandable()
+        initListExpandable()
+    }
+
+    private fun simpleModal(){
         Modal
                 .builder(this).apply {
                     title = "Hiii!"
@@ -134,17 +127,15 @@ class MainActivity : AppCompatActivity() {
         if (!Modal.hide(this)) super.onBackPressed()
     }
 
-    fun openModal2(view: View?) {
-        customModal = Modal.builder(view!!) //                    .setDirection(Modal.Direction.TopToBottom)
-                .setType(Modal.Type.Custom)
+    fun openModalWithCustomBackground(view: View?) {
+        customModal = Modal.builder(view!!) //                    .setDirection(Modal.Direction.Top)
+                .setTitle("A Custom Background!")
+                .setMessage("We have passed a drawable file and it's the new background new.\nLooks good!")
                 .setBlurEnabled(false)
-                .setContentView(R.layout.sample_layout)
+                .setDirection(Modal.Direction.Top)
+                .setBackground(ResourcesCompat.getDrawable(resources,R.drawable.custom_bg,null))
                 .build()
 
-        customModal.show()
-        customModal.hide()
-        customModal.show()
-        customModal.hide()
         customModal.show()
     }
 

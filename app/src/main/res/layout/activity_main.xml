@@ -39,7 +39,7 @@
             android:id="@+id/modalBtn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="openModal2"
+            android:onClick="openModalWithCustomBackground"
             android:text="Open Custom Modal" />
 
         <Button
@@ -55,18 +55,6 @@
             android:layout_height="wrap_content"
             android:onClick="openProgressModal"
             android:text="Open Progress Modal" />
-
-        <ir.drax.expandable.Expandable
-            android:layout_marginTop="16dp"
-            android:id="@+id/myExpandableList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-         <ir.drax.expandable.WaterfallExpandable
-            android:layout_marginTop="16dp"
-            android:id="@+id/waterfallExpandableList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

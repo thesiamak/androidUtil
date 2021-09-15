@@ -78,7 +78,7 @@ fun Fragment.message(message: String, actionText: String = "", callback: View.On
     val modal = Modal.builder(requireActivity()).apply {
         setMessage(message)
         icon = R.drawable.ic_outline_info_24
-        direction = Modal.Direction.TopToBottom
+        direction = Modal.Direction.Top
         if (actionText.isNotEmpty())
             setCallback(MoButton(actionText, 0) {
                 callback?.onClick(it)

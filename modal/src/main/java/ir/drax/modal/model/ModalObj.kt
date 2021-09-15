@@ -1,14 +1,10 @@
 package ir.drax.modal.model
 
+import android.graphics.drawable.Drawable
 import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import ir.drax.modal.Listener
 import ir.drax.modal.Modal
-import java.util.*
-import kotlin.properties.ObservableProperty
 
 data class ModalObj(
         private val source:ModalObj? = null,
@@ -21,7 +17,7 @@ data class ModalObj(
     var onShow:()->Unit= source?.onShow ?: {}
     var onDismiss:()->Unit= source?.onDismiss ?:{}
     var blurEnabled:Boolean= source?.blurEnabled ?: false
-    var direction:Modal.Direction = source?.direction ?: Modal.Direction.BottomToTop
+    var direction:Modal.Direction = source?.direction ?: Modal.Direction.Bottom
     var lockVisibility:Boolean= source?.lockVisibility ?: false
     var title:CharSequence= source?.title ?: ""
     var message:MoButton = source?.message ?: MoButton("")
@@ -29,6 +25,7 @@ data class ModalObj(
     var callback: MoButton? = source?.callback
     var list:List<MoButton> = source?.list ?: listOf()
     var progress:Int = source?.progress ?: 0
+    var backgroundDrawable:Drawable? = source?.backgroundDrawable
 
     var animationDuration:Long = source?.animationDuration ?: 250L
     var animationStartDelay:Long = source?.animationStartDelay ?: 0L
