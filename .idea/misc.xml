@@ -12,6 +12,8 @@
         <entry key="modal/src/main/res/drawable/modal_root_transition.xml" value="0.3645833333333333" />
         <entry key="modal/src/main/res/drawable/top_curved_header.xml" value="0.3645833333333333" />
         <entry key="modal/src/main/res/layout/modal_alert_layout.xml" value="0.3375893769152196" />
+        <entry key="modal/src/main/res/layout/modal_list_layout.xml" value="0.32407407407407407" />
+        <entry key="modal/src/main/res/layout/modal_progress_layout.xml" value="0.3619791666666667" />
       </map>
     </option>
   </component>

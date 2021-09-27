@@ -22,9 +22,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:padding="8dp"
-        android:tint="#FF000000"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:tint="#FF000000" />
 
     <TextView
         android:id="@+id/title"
@@ -34,6 +34,7 @@
         android:padding="8dp"
         app:layout_constraintStart_toEndOf="@id/icon"
         app:layout_constraintEnd_toStartOf="@id/close"
+        app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/modal_title"
         android:textStyle="bold"
         android:layout_width="match_parent"

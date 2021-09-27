@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity,"Dismissed!",Toast.LENGTH_SHORT).show()
             }
             setMessage("Update message ..")
-            backdr
         }.build()
     }
 
@@ -43,17 +42,17 @@ class MainActivity : AppCompatActivity() {
         Modal.init {
             blurEnabled = true
         }
-        simpleModal()
 
         initExpandable()
         initListExpandable()
     }
 
-    private fun simpleModal(){
+    fun simpleModal(view: View?){
         Modal
                 .builder(this).apply {
                     title = "Hiii!"
                     message = "Message is here!\n second line of message as well! :) "
+                    blurEnabled = false
 
                 }
                 .build()
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("ResourceType")
-    fun openModal(view: View?) {
+    fun openFragmentModal(view: View?) {
         val layout = FrameLayout(this)
         layout.id = 1
         val fm = supportFragmentManager.beginTransaction()
@@ -131,12 +130,17 @@ class MainActivity : AppCompatActivity() {
     fun openModalWithCustomBackground(view: View?) {
         customModal = Modal.builder(view!!) //                    .setDirection(Modal.Direction.Top)
                 .setTitle("A Custom Background!")
-                .setMessage("We have passed a drawable file and it's the new background new.\nLooks good!")
+                .setMessage("We have passed a drawable file and it's the new background.\nLooks good!")
                 .setBlurEnabled(false)
                 .setDirection(Modal.Direction.Top)
                 .setBackground(ResourcesCompat.getDrawable(resources,R.drawable.custom_bg,null))
                 .build()
 
+        customModal.show()
+        customModal.hide()
+        customModal.hide()
+        customModal.hide()
+        customModal.hide()
         customModal.show()
     }
 

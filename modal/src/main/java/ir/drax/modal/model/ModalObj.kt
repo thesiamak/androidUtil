@@ -28,7 +28,7 @@ data class ModalObj(
     var backgroundDrawable:Drawable? = source?.backgroundDrawable
 
     var animationDuration:Long = source?.animationDuration ?: 250L
-    var animationStartDelay:Long = source?.animationStartDelay ?: 0L
+    var exitAnimationDuration:Long = animationDuration.div(2)
 
     init {
         if (listener == null) {
