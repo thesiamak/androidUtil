@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity,"Dismissed!",Toast.LENGTH_SHORT).show()
             }
             setMessage("Update message ..")
-            backdr
         }.build()
     }
 
@@ -131,7 +130,7 @@ class MainActivity : AppCompatActivity() {
     fun openModalWithCustomBackground(view: View?) {
         customModal = Modal.builder(view!!) //                    .setDirection(Modal.Direction.Top)
                 .setTitle("A Custom Background!")
-                .setMessage("We have passed a drawable file and it's the new background new.\nLooks good!")
+                .setMessage("We have passed a drawable file and it's the new background.\nLooks good!")
                 .setBlurEnabled(false)
                 .setDirection(Modal.Direction.Top)
                 .setBackground(ResourcesCompat.getDrawable(resources,R.drawable.custom_bg,null))

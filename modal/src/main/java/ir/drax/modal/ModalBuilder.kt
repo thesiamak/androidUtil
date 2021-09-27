@@ -114,43 +114,39 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                             }
                         }
 
-                    openingAnim = animate()
-                            .setStartDelay(options.animationStartDelay)
-                            .setListener(object : AnimatorListenerAdapter() {
-                                override fun onAnimationStart(animation: Animator?) {
-                                    if(options.blurEnabled.not())
-                                        (bg.background as TransitionDrawable).startTransition(options.animationDuration.toInt())
-                                    else
-                                        blurEffect(true)
 
-                                    super.onAnimationStart(animation)
-                                }
+                    // On Animation start
+                    if(options.blurEnabled.not())
+                        (bg.background as TransitionDrawable).startTransition(options.animationDuration.toInt())
+                    else
+                        blurEffect(true)
+                    // On Animation start
 
-                                override fun onAnimationEnd(animation: Animator?) {
-                                    options.listener?.onShow()
-                                    if (options.type != Modal.Type.Custom) {
-                                        findViewById<View>(R.id.ok)
-                                                .animate()
-                                                .translationY(
-                                                        if (options.direction == Modal.Direction.Bottom)
-                                                            -16f
-                                                        else
-                                                            0f
-                                                )
-                                                .setDuration(options.animationDuration)
-                                                .setInterpolator(CycleInterpolator(0.1f))
-                                                .start()
-                                    }
-                                    super.onAnimationEnd(animation)
-                                }
-                            })
-                            .translationY(
-                                    if ((options.direction) == Modal.Direction.Bottom)
-                                        -height.toFloat()
-                                    else
-                                        height.toFloat())
 
-                            .setDuration(options.animationDuration)
+                    // On Animation end
+                    options.listener?.onShow()
+                    if (options.type != Modal.Type.Custom) {
+                        findViewById<View>(R.id.ok)
+                                .animate()
+                                .translationY(
+                                        if (options.direction == Modal.Direction.Bottom)
+                                            -16f
+                                        else
+                                            0f
+                                )
+                                .setDuration(options.animationDuration)
+                                .setInterpolator(CycleInterpolator(0.1f))
+                                .start()
+                    }
+                    // On Animation end
+
+
+                    // Animation direction
+                    if ((options.direction) == Modal.Direction.Bottom)
+                        -height.toFloat()
+                    else
+                        height.toFloat()
+                    // Animation direction
 
 
                     /**
