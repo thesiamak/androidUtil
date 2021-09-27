@@ -42,17 +42,17 @@ class MainActivity : AppCompatActivity() {
         Modal.init {
             blurEnabled = true
         }
-        simpleModal()
 
         initExpandable()
         initListExpandable()
     }
 
-    private fun simpleModal(){
+    fun simpleModal(view: View?){
         Modal
                 .builder(this).apply {
                     title = "Hiii!"
                     message = "Message is here!\n second line of message as well! :) "
+                    blurEnabled = false
 
                 }
                 .build()
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("ResourceType")
-    fun openModal(view: View?) {
+    fun openFragmentModal(view: View?) {
         val layout = FrameLayout(this)
         layout.id = 1
         val fm = supportFragmentManager.beginTransaction()
@@ -136,6 +136,11 @@ class MainActivity : AppCompatActivity() {
                 .setBackground(ResourcesCompat.getDrawable(resources,R.drawable.custom_bg,null))
                 .build()
 
+        customModal.show()
+        customModal.hide()
+        customModal.hide()
+        customModal.hide()
+        customModal.hide()
         customModal.show()
     }
 

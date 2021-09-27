@@ -33,13 +33,13 @@
     <ImageView
         android:id="@+id/icon"
         android:scaleType="fitCenter"
-        android:tint="@color/modal_text_icon"
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         app:srcCompat="@drawable/ic_close_black_12dp"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginLeft="16dp" />
+        android:layout_marginLeft="16dp"
+        app:tint="@color/modal_text_icon" />
 
     <TextView
         android:autoLink="all"

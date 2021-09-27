@@ -25,13 +25,23 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/simpleModalBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Open Simple Modal"
+            android:onClick="simpleModal"
+            />
+
+ <Button
             android:id="@+id/modalBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="Open Fragment"
-            android:onClick="openModal"
+            android:onClick="openFragmentModal"
             />
 
 
