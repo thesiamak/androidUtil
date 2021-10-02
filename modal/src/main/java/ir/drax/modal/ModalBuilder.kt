@@ -32,7 +32,7 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
 
     private val blurBg :ImageView by lazy {
         ImageView(root.context).apply {
-            alpha = 0f
+//            alpha = 0f
         }
     }
 
