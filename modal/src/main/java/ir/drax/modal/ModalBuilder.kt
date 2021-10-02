@@ -12,7 +12,6 @@ import android.widget.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.drawToBitmap
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,19 +21,20 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Exception
+import java.util.*
 
 class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: ViewGroup, context: Context=root.context, attrs: AttributeSet?=null, defStyleAttr: Int = 0)
     :RelativeLayout(context,attrs,defStyleAttr)
         ,Observer<ModalObj> {
 
+    private var slideAnimation: Animation? = null
     private var bg:ViewGroup
     private var layoutListener: OnGlobalLayoutListener?=null
 
     private val blurBg :ImageView by lazy {
-        ImageView(root.context).apply {
-            alpha = 0f
-        }
+        ImageView(root.context)
     }
+    private var onAnimationFinishedQueue:MutableList<() -> Unit> = mutableListOf()
 
     private fun drawBlurBg(){
         val screenToCapture = root.drawToBitmap()
@@ -87,20 +87,25 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
         }
     }
 
-    fun hide(){
-        hide(bg,true)
-    }
+    fun hide() = hide(bg,true)
 
     fun show():ModalBuilder{
-        buildModal()
-        options.update.observeForever(this)
+        if (slideAnimation != null){
+            onAnimationFinishedQueue.add {
+                show()
+            }
+
+        }else {
+            buildModal()
+            options.update.observeForever(this)
+        }
         return this
     }
 
     private fun buildModal(){
         if(bg.parent ==null) {
             root.addView(bg, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-            layoutListener =object : OnGlobalLayoutListener {
+            object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
 
                     root.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -133,7 +138,7 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
 
                     }
                 }
-            }
+            }.also { layoutListener = it }
             root.viewTreeObserver?.addOnGlobalLayoutListener(layoutListener)
         }
     }
@@ -151,8 +156,15 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                 .start()
     }
 
-    fun hide(header:View, forceClose:Boolean=false) : Boolean{
-        return if (options.lockVisibility.not() || forceClose){
+    fun hide(header:View, forceClose:Boolean=false) : Boolean {
+        return if (slideAnimation != null){
+            onAnimationFinishedQueue.add {
+                hide(header, forceClose)
+            }
+            false
+
+        }else if (options.lockVisibility.not() || forceClose){
+
             root.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
 
             if(options.blurEnabled.not())
@@ -186,24 +198,36 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                     Modal.Direction.Top -> R.anim.slide_exit_top
                 }
 
+        slideAnimation = AnimationUtils
+                .loadAnimation(context, animation)
+
         startAnimation(
-                AnimationUtils
-                        .loadAnimation(context, animation)
-                        .apply {
-                            duration = options.exitAnimationDuration
+                slideAnimation?.apply {
+                    duration = options.exitAnimationDuration
 
-                            setAnimationListener(object :Animation.AnimationListener{
-                                override fun onAnimationStart(p0: Animation?) {}
+                    setAnimationListener(object :Animation.AnimationListener{
+                        override fun onAnimationStart(p0: Animation?) {}
 
-                                override fun onAnimationEnd(p0: Animation?) {
-                                    onEnd.invoke()
-                                }
-
-                                override fun onAnimationRepeat(p0: Animation?) {}
-
-                            })
+                        override fun onAnimationEnd(p0: Animation?) {
+                            animationFinished(onEnd)
                         }
+
+                        override fun onAnimationRepeat(p0: Animation?) {}
+
+                    })
+                }
         )
+    }
+
+    private inline fun animationFinished(crossinline onEnd: () -> Unit) {
+        onEnd.invoke()
+        slideAnimation = null
+        onAnimationFinishedQueue
+                .lastOrNull()
+                ?.let {
+                    onAnimationFinishedQueue.clear()
+                    it.invoke()
+                }
     }
 
     private inline fun animateIn(direction: Modal.Direction, crossinline onEnd:()->Unit = {}) {
@@ -213,24 +237,26 @@ class ModalBuilder @JvmOverloads constructor(var options:ModalObj, val root: Vie
                     Modal.Direction.Bottom -> R.anim.slide_enter_bottom
                 }
 
+        slideAnimation = AnimationUtils
+                .loadAnimation(context, animation)
+
         startAnimation(
-                AnimationUtils
-                        .loadAnimation(context, animation)
-                        .apply {
-                            duration = options.animationDuration
-                            interpolator = FastOutSlowInInterpolator()
+                slideAnimation?.apply {
 
-                            setAnimationListener(object :Animation.AnimationListener{
-                                override fun onAnimationStart(p0: Animation?) {}
+                    duration = options.animationDuration
+                    interpolator = FastOutSlowInInterpolator()
 
-                                override fun onAnimationEnd(p0: Animation?) {
-                                    onEnd.invoke()
-                                }
+                    setAnimationListener(object :Animation.AnimationListener{
+                        override fun onAnimationStart(p0: Animation?) {}
 
-                                override fun onAnimationRepeat(p0: Animation?) {}
-
-                            })
+                        override fun onAnimationEnd(p0: Animation?) {
+                            animationFinished(onEnd)
                         }
+
+                        override fun onAnimationRepeat(p0: Animation?) {}
+
+                    })
+                }
         )
     }
 
